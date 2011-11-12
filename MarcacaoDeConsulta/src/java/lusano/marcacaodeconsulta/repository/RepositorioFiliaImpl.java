@@ -7,6 +7,7 @@ package lusano.marcacaodeconsulta.repository;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import lusano.marcacaodeconsulta.entity.Filial;
 
 /**
@@ -16,11 +17,16 @@ import lusano.marcacaodeconsulta.entity.Filial;
 public class RepositorioFiliaImpl extends RepositorioJPA<Filial> implements RepositorioFilial{
     
     public List<Filial> obterFiliaisEmpresa(int codEmpresa){
+        Query query;
+        query = getEntityManager().createNamedQuery("Filial.findByCodEmpresa", Filial.class);
+        query.setParameter("codEmpresa", codEmpresa);
+
         try {
-            return getEntityManager().createNamedQuery("Filial.findByCodEmpresa", Filial.class).getResultList();
+            return query.getResultList();
         } catch (NoResultException ex) {
-            return new ArrayList<Filial>();
+            return null;
         }
+
     }
     
 }

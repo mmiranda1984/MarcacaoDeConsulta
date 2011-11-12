@@ -8,6 +8,8 @@ import lusano.marcacaodeconsulta.repository.RepositorioEmpresa;
 import lusano.marcacaodeconsulta.repository.RepositorioEmpresaImpl;
 import lusano.marcacaodeconsulta.repository.RepositorioFiliaImpl;
 import lusano.marcacaodeconsulta.repository.RepositorioFilial;
+import lusano.marcacaodeconsulta.repository.RepositorioUsuario;
+import lusano.marcacaodeconsulta.repository.RepositorioUsuarioImpl;
 
 /**
  *
@@ -22,4 +24,9 @@ public class FabricaRepositorio {
     public static RepositorioFilial obterRepositorioDeFilial(){
         return new RepositorioFiliaImpl();
     }
+
+    public static RepositorioUsuario obterRepositorioDeUsuario(){
+        return new RepositorioUsuarioImpl();
+    }
+
 }
