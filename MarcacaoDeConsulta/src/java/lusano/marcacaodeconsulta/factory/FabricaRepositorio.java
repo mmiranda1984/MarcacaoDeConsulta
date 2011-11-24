@@ -4,10 +4,14 @@
  */
 package lusano.marcacaodeconsulta.factory;
 
+import lusano.marcacaodeconsulta.repository.RepositorioConsulta;
+import lusano.marcacaodeconsulta.repository.RepositorioConsultaImpl;
 import lusano.marcacaodeconsulta.repository.RepositorioEmpresa;
 import lusano.marcacaodeconsulta.repository.RepositorioEmpresaImpl;
 import lusano.marcacaodeconsulta.repository.RepositorioFiliaImpl;
 import lusano.marcacaodeconsulta.repository.RepositorioFilial;
+import lusano.marcacaodeconsulta.repository.RepositorioPaciente;
+import lusano.marcacaodeconsulta.repository.RepositorioPacienteImpl;
 import lusano.marcacaodeconsulta.repository.RepositorioUsuario;
 import lusano.marcacaodeconsulta.repository.RepositorioUsuarioImpl;
 
@@ -27,6 +31,14 @@ public class FabricaRepositorio {
 
     public static RepositorioUsuario obterRepositorioDeUsuario(){
         return new RepositorioUsuarioImpl();
+    }
+
+    public static RepositorioPaciente obterRepositorioDePaciente(){
+        return new RepositorioPacienteImpl();
+    }
+
+    public static RepositorioConsulta obterRepositorioDeConsulta(){
+        return new RepositorioConsultaImpl();
     }
 
 }

@@ -12,11 +12,13 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -30,11 +32,12 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Paciente.findAll", query = "SELECT p FROM Paciente p"),
     @NamedQuery(name = "Paciente.findByCodPaciente", query = "SELECT p FROM Paciente p WHERE p.pacientePK.codPaciente = :codPaciente"),
-    @NamedQuery(name = "Paciente.findByCodFilial", query = "SELECT p FROM Paciente p WHERE p.pacientePK.codFilial = :codFilial"),
+    @NamedQuery(name = "Paciente.findByCodFilialPaciente", query = "SELECT p FROM Paciente p WHERE p.pacientePK.codFilialPaciente = :codFilialPaciente"),
     @NamedQuery(name = "Paciente.findByNumIdentificacaoPaciente", query = "SELECT p FROM Paciente p WHERE p.numIdentificacaoPaciente = :numIdentificacaoPaciente"),
     @NamedQuery(name = "Paciente.findByNomPaciente", query = "SELECT p FROM Paciente p WHERE p.nomPaciente = :nomPaciente"),
     @NamedQuery(name = "Paciente.findByTxtEmailPaciente", query = "SELECT p FROM Paciente p WHERE p.txtEmailPaciente = :txtEmailPaciente"),
     @NamedQuery(name = "Paciente.findByNumContatoPaciente", query = "SELECT p FROM Paciente p WHERE p.numContatoPaciente = :numContatoPaciente"),
+    @NamedQuery(name = "Paciente.findByIndAtivoCodFilial", query = "SELECT p FROM Paciente p WHERE p.pacientePK.codFilialPaciente = :codFilialPaciente AND p.indAtivo = :indAtivo"),
     @NamedQuery(name = "Paciente.findByIndAtivo", query = "SELECT p FROM Paciente p WHERE p.indAtivo = :indAtivo")})
 public class Paciente implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -51,11 +54,16 @@ public class Paciente implements Serializable {
     @Basic(optional = false)
     @Column(name = "IND_ATIVO")
     private boolean indAtivo;
-    @JoinColumn(name = "COD_FILIAL", referencedColumnName = "COD_FILIAL", insertable = false, updatable = false)
     @ManyToOne(optional = false)
+    @JoinColumns ({
+        @JoinColumn(name="COD_FILIAL_PACIENTE", referencedColumnName="COD_FILIAL", insertable = false, updatable = false),
+        @JoinColumn(name="COD_FILIAL_PACIENTE", referencedColumnName="COD_FILIAL", insertable = false, updatable = false)
+    })
     private Filial filial;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "paciente")
     private Collection<Consulta> consultaCollection;
+    @Transient
+    private String status;
 
     public Paciente() {
     }
@@ -69,8 +77,8 @@ public class Paciente implements Serializable {
         this.indAtivo = indAtivo;
     }
 
-    public Paciente(int codPaciente, int codFilial) {
-        this.pacientePK = new PacientePK(codPaciente, codFilial);
+    public Paciente(int codPaciente, int codFilialPaciente) {
+        this.pacientePK = new PacientePK(codPaciente, codFilialPaciente);
     }
 
     public PacientePK getPacientePK() {
@@ -161,6 +169,23 @@ public class Paciente implements Serializable {
     @Override
     public String toString() {
         return "lusano.marcacaodeconsulta.entity.Paciente[ pacientePK=" + pacientePK + " ]";
+    }
+
+    /**
+     * @return the ativo
+     */
+    public String getStatus() {
+        if (getIndAtivo()) 
+            return "Ativo";
+        else
+            return "Inativo";
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(String status) {
+        this.status = status;
     }
     
 }

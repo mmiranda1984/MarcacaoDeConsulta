@@ -19,15 +19,15 @@ public class PacientePK implements Serializable {
     @Column(name = "COD_PACIENTE")
     private int codPaciente;
     @Basic(optional = false)
-    @Column(name = "COD_FILIAL")
-    private int codFilial;
+    @Column(name = "COD_FILIAL_PACIENTE")
+    private int codFilialPaciente;
 
     public PacientePK() {
     }
 
-    public PacientePK(int codPaciente, int codFilial) {
+    public PacientePK(int codPaciente, int codFilialPaciente) {
         this.codPaciente = codPaciente;
-        this.codFilial = codFilial;
+        this.codFilialPaciente = codFilialPaciente;
     }
 
     public int getCodPaciente() {
@@ -38,19 +38,19 @@ public class PacientePK implements Serializable {
         this.codPaciente = codPaciente;
     }
 
-    public int getCodFilial() {
-        return codFilial;
+    public int getCodFilialPaciente() {
+        return codFilialPaciente;
     }
 
-    public void setCodFilial(int codFilial) {
-        this.codFilial = codFilial;
+    public void setCodFilialPaciente(int codFilialPaciente) {
+        this.codFilialPaciente = codFilialPaciente;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (int) codPaciente;
-        hash += (int) codFilial;
+        hash += (int) codFilialPaciente;
         return hash;
     }
 
@@ -64,7 +64,7 @@ public class PacientePK implements Serializable {
         if (this.codPaciente != other.codPaciente) {
             return false;
         }
-        if (this.codFilial != other.codFilial) {
+        if (this.codFilialPaciente != other.codFilialPaciente) {
             return false;
         }
         return true;
@@ -72,7 +72,7 @@ public class PacientePK implements Serializable {
 
     @Override
     public String toString() {
-        return "lusano.marcacaodeconsulta.entity.PacientePK[ codPaciente=" + codPaciente + ", codFilial=" + codFilial + " ]";
+        return "lusano.marcacaodeconsulta.entity.PacientePK[ codPaciente=" + codPaciente + ", codFilialPaciente=" + codFilialPaciente + " ]";
     }
     
 }

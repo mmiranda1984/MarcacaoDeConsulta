@@ -30,10 +30,12 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Filial.findAll", query = "SELECT f FROM Filial f"),
     @NamedQuery(name = "Filial.findByCodFilial", query = "SELECT f FROM Filial f WHERE f.filialPK.codFilial = :codFilial"),
-    @NamedQuery(name = "Filial.findByCodEmpresa", query = "SELECT f FROM Filial f WHERE f.filialPK.codEmpresa = :codEmpresa"),
+    @NamedQuery(name = "Filial.findByCodEmpresaFilial", query = "SELECT f FROM Filial f WHERE f.filialPK.codEmpresaFilial = :codEmpresaFilial"),
     @NamedQuery(name = "Filial.findByNomFilial", query = "SELECT f FROM Filial f WHERE f.nomFilial = :nomFilial"),
     @NamedQuery(name = "Filial.findByTxtEmailFilial", query = "SELECT f FROM Filial f WHERE f.txtEmailFilial = :txtEmailFilial"),
-    @NamedQuery(name = "Filial.findByIndAtivo", query = "SELECT f FROM Filial f WHERE f.indAtivo = :indAtivo")})
+    @NamedQuery(name = "Filial.findByIndAtivo", query = "SELECT f FROM Filial f WHERE f.indAtivo = :indAtivo"),
+    @NamedQuery(name = "Filial.todasAsFiliasAtivasDeUmaEmpresa", query = "SELECT f FROM Filial f WHERE f.filialPK.codEmpresaFilial = :codEmpresaFilial and f.indAtivo = 1"),
+})
 public class Filial implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -51,7 +53,7 @@ public class Filial implements Serializable {
     private Collection<Paciente> pacienteCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "filial")
     private Collection<Usuario> usuarioCollection;
-    @JoinColumn(name = "COD_EMPRESA", referencedColumnName = "COD_EMPRESA", insertable = false, updatable = false)
+    @JoinColumn(name = "COD_EMPRESA_FILIAL", referencedColumnName = "COD_EMPRESA", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Empresa empresa;
 
@@ -69,8 +71,8 @@ public class Filial implements Serializable {
         this.indAtivo = indAtivo;
     }
 
-    public Filial(int codFilial, int codEmpresa) {
-        this.filialPK = new FilialPK(codFilial, codEmpresa);
+    public Filial(int codFilial, int codEmpresaFilial) {
+        this.filialPK = new FilialPK(codFilial, codEmpresaFilial);
     }
 
     public FilialPK getFilialPK() {

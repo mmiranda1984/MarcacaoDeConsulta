@@ -19,15 +19,15 @@ public class ConsultaPK implements Serializable {
     @Column(name = "COD_CONSULTA")
     private int codConsulta;
     @Basic(optional = false)
-    @Column(name = "COD_PACIENTE")
-    private int codPaciente;
+    @Column(name = "COD_PACIENTE_CONSULTA")
+    private int codPacienteConsulta;
 
     public ConsultaPK() {
     }
 
-    public ConsultaPK(int codConsulta, int codPaciente) {
+    public ConsultaPK(int codConsulta, int codPacienteConsulta) {
         this.codConsulta = codConsulta;
-        this.codPaciente = codPaciente;
+        this.codPacienteConsulta = codPacienteConsulta;
     }
 
     public int getCodConsulta() {
@@ -38,19 +38,19 @@ public class ConsultaPK implements Serializable {
         this.codConsulta = codConsulta;
     }
 
-    public int getCodPaciente() {
-        return codPaciente;
+    public int getCodPacienteConsulta() {
+        return codPacienteConsulta;
     }
 
-    public void setCodPaciente(int codPaciente) {
-        this.codPaciente = codPaciente;
+    public void setCodPacienteConsulta(int codPacienteConsulta) {
+        this.codPacienteConsulta = codPacienteConsulta;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (int) codConsulta;
-        hash += (int) codPaciente;
+        hash += (int) codPacienteConsulta;
         return hash;
     }
 
@@ -64,7 +64,7 @@ public class ConsultaPK implements Serializable {
         if (this.codConsulta != other.codConsulta) {
             return false;
         }
-        if (this.codPaciente != other.codPaciente) {
+        if (this.codPacienteConsulta != other.codPacienteConsulta) {
             return false;
         }
         return true;
@@ -72,7 +72,7 @@ public class ConsultaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "lusano.marcacaodeconsulta.entity.ConsultaPK[ codConsulta=" + codConsulta + ", codPaciente=" + codPaciente + " ]";
+        return "lusano.marcacaodeconsulta.entity.ConsultaPK[ codConsulta=" + codConsulta + ", codPacienteConsulta=" + codPacienteConsulta + " ]";
     }
     
 }

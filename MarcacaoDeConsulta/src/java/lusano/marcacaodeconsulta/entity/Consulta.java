@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -28,24 +29,27 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Consulta.findAll", query = "SELECT c FROM Consulta c"),
     @NamedQuery(name = "Consulta.findByCodConsulta", query = "SELECT c FROM Consulta c WHERE c.consultaPK.codConsulta = :codConsulta"),
-    @NamedQuery(name = "Consulta.findByCodPaciente", query = "SELECT c FROM Consulta c WHERE c.consultaPK.codPaciente = :codPaciente"),
+    @NamedQuery(name = "Consulta.findByCodPacienteConsulta", query = "SELECT c FROM Consulta c WHERE c.consultaPK.codPacienteConsulta = :codPacienteConsulta"),
     @NamedQuery(name = "Consulta.findByDatConsulta", query = "SELECT c FROM Consulta c WHERE c.datConsulta = :datConsulta"),
     @NamedQuery(name = "Consulta.findByHorConsulta", query = "SELECT c FROM Consulta c WHERE c.horConsulta = :horConsulta"),
-    @NamedQuery(name = "Consulta.findByNumDiasAntecedenciaEmail", query = "SELECT c FROM Consulta c WHERE c.numDiasAntecedenciaEmail = :numDiasAntecedenciaEmail")})
+    @NamedQuery(name = "Consulta.findByNumDiasAntecedenciaEmail", query = "SELECT c FROM Consulta c WHERE c.numDiasAntecedenciaEmail = :numDiasAntecedenciaEmail"),
+    @NamedQuery(name = "Consulta.removeByCodPacienteConsulta", query = "DELETE FROM Consulta c WHERE c.consultaPK.codPacienteConsulta = :codPacienteConsulta")})
 public class Consulta implements Serializable {
-    private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected ConsultaPK consultaPK;
     @Column(name = "DAT_CONSULTA")
     @Temporal(TemporalType.DATE)
     private Date datConsulta;
     @Column(name = "HOR_CONSULTA")
-    @Temporal(TemporalType.TIME)
-    private Date horConsulta;
+    private String horConsulta;
+    private static final long serialVersionUID = 1L;
+    @EmbeddedId
+    protected ConsultaPK consultaPK;
     @Column(name = "NUM_DIAS_ANTECEDENCIA_EMAIL")
     private Integer numDiasAntecedenciaEmail;
-    @JoinColumn(name = "COD_PACIENTE", referencedColumnName = "COD_PACIENTE", insertable = false, updatable = false)
     @ManyToOne(optional = false)
+    @JoinColumns ({
+        @JoinColumn(name="COD_PACIENTE_CONSULTA", referencedColumnName="COD_PACIENTE", insertable = false, updatable = false),
+        @JoinColumn(name="COD_PACIENTE_CONSULTA", referencedColumnName="COD_PACIENTE", insertable = false, updatable = false)
+    })
     private Paciente paciente;
 
     public Consulta() {
@@ -55,8 +59,8 @@ public class Consulta implements Serializable {
         this.consultaPK = consultaPK;
     }
 
-    public Consulta(int codConsulta, int codPaciente) {
-        this.consultaPK = new ConsultaPK(codConsulta, codPaciente);
+    public Consulta(int codConsulta, int codPacienteConsulta) {
+        this.consultaPK = new ConsultaPK(codConsulta, codPacienteConsulta);
     }
 
     public ConsultaPK getConsultaPK() {
@@ -65,22 +69,6 @@ public class Consulta implements Serializable {
 
     public void setConsultaPK(ConsultaPK consultaPK) {
         this.consultaPK = consultaPK;
-    }
-
-    public Date getDatConsulta() {
-        return datConsulta;
-    }
-
-    public void setDatConsulta(Date datConsulta) {
-        this.datConsulta = datConsulta;
-    }
-
-    public Date getHorConsulta() {
-        return horConsulta;
-    }
-
-    public void setHorConsulta(Date horConsulta) {
-        this.horConsulta = horConsulta;
     }
 
     public Integer getNumDiasAntecedenciaEmail() {
@@ -122,6 +110,22 @@ public class Consulta implements Serializable {
     @Override
     public String toString() {
         return "lusano.marcacaodeconsulta.entity.Consulta[ consultaPK=" + consultaPK + " ]";
+    }
+
+    public Date getDatConsulta() {
+        return datConsulta;
+    }
+
+    public void setDatConsulta(Date datConsulta) {
+        this.datConsulta = datConsulta;
+    }
+
+    public String getHorConsulta() {
+        return horConsulta;
+    }
+
+    public void setHorConsulta(String horConsulta) {
+        this.horConsulta = horConsulta;
     }
     
 }

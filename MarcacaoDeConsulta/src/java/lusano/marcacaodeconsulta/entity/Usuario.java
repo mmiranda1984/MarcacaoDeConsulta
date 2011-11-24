@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -26,12 +27,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u"),
     @NamedQuery(name = "Usuario.findByCodUsuario", query = "SELECT u FROM Usuario u WHERE u.usuarioPK.codUsuario = :codUsuario"),
-    @NamedQuery(name = "Usuario.findByCodFilial", query = "SELECT u FROM Usuario u WHERE u.usuarioPK.codFilial = :codFilial"),
+    @NamedQuery(name = "Usuario.findByCodFilialUsuario", query = "SELECT u FROM Usuario u WHERE u.usuarioPK.codFilialUsuario = :codFilialUsuario"),
     @NamedQuery(name = "Usuario.findByNomUsuario", query = "SELECT u FROM Usuario u WHERE u.nomUsuario = :nomUsuario"),
     @NamedQuery(name = "Usuario.findByTxtLoginUsuario", query = "SELECT u FROM Usuario u WHERE u.txtLoginUsuario = :txtLoginUsuario"),
     @NamedQuery(name = "Usuario.findByTxtSenhaUsuario", query = "SELECT u FROM Usuario u WHERE u.txtSenhaUsuario = :txtSenhaUsuario"),
     @NamedQuery(name = "Usuario.findByIndAtivo", query = "SELECT u FROM Usuario u WHERE u.indAtivo = :indAtivo"),
-    @NamedQuery(name = "Usuario.findByLoginSenha", query = "SELECT u FROM Usuario u WHERE u.txtLoginUsuario = :txtLoginUsuario AND u.txtSenhaUsuario = :txtSenhaUsuario")})
+    @NamedQuery(name = "Usuario.findByFilialLoginAtivo", query = "SELECT u FROM Usuario u WHERE u.usuarioPK.codFilialUsuario = :codFilialUsuario AND u.txtLoginUsuario = :txtLoginUsuario AND u.indAtivo = 1"),
+    @NamedQuery(name = "Usuario.findByFilialLoginSenhaAtivo", query = "SELECT u FROM Usuario u WHERE u.usuarioPK.codFilialUsuario = :codFilialUsuario AND u.txtLoginUsuario = :txtLoginUsuario AND u.txtSenhaUsuario = :txtSenhaUsuario AND u.indAtivo = 1")})
 public class Usuario implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -48,7 +50,10 @@ public class Usuario implements Serializable {
     @Basic(optional = false)
     @Column(name = "IND_ATIVO")
     private boolean indAtivo;
-    @JoinColumn(name = "COD_FILIAL", referencedColumnName = "COD_FILIAL", insertable = false, updatable = false)
+    @JoinColumns ({
+        @JoinColumn(name="COD_FILIAL_USUARIO", referencedColumnName="COD_FILIAL", insertable = false, updatable = false),
+        @JoinColumn(name="COD_FILIAL_USUARIO", referencedColumnName="COD_FILIAL", insertable = false, updatable = false)
+    })
     @ManyToOne(optional = false)
     private Filial filial;
 
@@ -67,8 +72,8 @@ public class Usuario implements Serializable {
         this.indAtivo = indAtivo;
     }
 
-    public Usuario(int codUsuario, int codFilial) {
-        this.usuarioPK = new UsuarioPK(codUsuario, codFilial);
+    public Usuario(int codUsuario, int codFilialUsuario) {
+        this.usuarioPK = new UsuarioPK(codUsuario, codFilialUsuario);
     }
 
     public UsuarioPK getUsuarioPK() {

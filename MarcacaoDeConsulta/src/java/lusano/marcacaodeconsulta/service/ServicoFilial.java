@@ -13,6 +13,6 @@ import lusano.marcacaodeconsulta.entity.Filial;
  */
 public interface ServicoFilial {
     
-    List<Filial> obterTodasAsFiliaisDaEmpresa(int codEmpresa);
+    List<Filial> obterFiliaisAtivasDaEmpresa(int codEmpresa);
     
 }

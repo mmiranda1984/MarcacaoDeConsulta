@@ -13,11 +13,11 @@ import lusano.marcacaodeconsulta.repository.RepositorioFilial;
  *
  * @author mmiranda1984
  */
-public class ServicoFilialImpl {
+public class ServicoFilialImpl implements ServicoFilial{
     
-    public List<Filial> obterTodasAsFiliaisDaEmpresa(int codEmpresa){
+    public List<Filial> obterFiliaisAtivasDaEmpresa(int codEmpresa){
         RepositorioFilial rep = FabricaRepositorio.obterRepositorioDeFilial();
-        return rep.obterFiliaisEmpresa(codEmpresa);
+        return rep.obterFiliaisAtivasDaEmpresa(codEmpresa);
     }
     
 }

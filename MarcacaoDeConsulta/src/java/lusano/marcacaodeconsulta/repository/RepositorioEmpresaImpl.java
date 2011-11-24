@@ -7,6 +7,7 @@ package lusano.marcacaodeconsulta.repository;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import lusano.marcacaodeconsulta.entity.Empresa;
 
 /**
@@ -16,10 +17,14 @@ import lusano.marcacaodeconsulta.entity.Empresa;
 public class RepositorioEmpresaImpl extends RepositorioJPA<Empresa> implements RepositorioEmpresa{
     
     public List<Empresa> obterTodasEmpresasAtivas(){
+        Query query;
+        query = getEntityManager().createNamedQuery("Empresa.findByIndAtivo", Empresa.class);
+        query.setParameter("indAtivo", true);
+
         try {
-            return getEntityManager().createNamedQuery("AnaliseDeCausa.findByIndAtivo", Empresa.class).getResultList();
+            return query.getResultList();
         } catch (NoResultException ex) {
-            return new ArrayList<Empresa>();
+            return null;
         }
     }
     

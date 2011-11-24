@@ -19,15 +19,15 @@ public class FilialPK implements Serializable {
     @Column(name = "COD_FILIAL")
     private int codFilial;
     @Basic(optional = false)
-    @Column(name = "COD_EMPRESA")
-    private int codEmpresa;
+    @Column(name = "COD_EMPRESA_FILIAL")
+    private int codEmpresaFilial;
 
     public FilialPK() {
     }
 
-    public FilialPK(int codFilial, int codEmpresa) {
+    public FilialPK(int codFilial, int codEmpresaFilial) {
         this.codFilial = codFilial;
-        this.codEmpresa = codEmpresa;
+        this.codEmpresaFilial = codEmpresaFilial;
     }
 
     public int getCodFilial() {
@@ -38,19 +38,19 @@ public class FilialPK implements Serializable {
         this.codFilial = codFilial;
     }
 
-    public int getCodEmpresa() {
-        return codEmpresa;
+    public int getCodEmpresaFilial() {
+        return codEmpresaFilial;
     }
 
-    public void setCodEmpresa(int codEmpresa) {
-        this.codEmpresa = codEmpresa;
+    public void setCodEmpresaFilial(int codEmpresaFilial) {
+        this.codEmpresaFilial = codEmpresaFilial;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (int) codFilial;
-        hash += (int) codEmpresa;
+        hash += (int) codEmpresaFilial;
         return hash;
     }
 
@@ -64,7 +64,7 @@ public class FilialPK implements Serializable {
         if (this.codFilial != other.codFilial) {
             return false;
         }
-        if (this.codEmpresa != other.codEmpresa) {
+        if (this.codEmpresaFilial != other.codEmpresaFilial) {
             return false;
         }
         return true;
@@ -72,7 +72,7 @@ public class FilialPK implements Serializable {
 
     @Override
     public String toString() {
-        return "lusano.marcacaodeconsulta.entity.FilialPK[ codFilial=" + codFilial + ", codEmpresa=" + codEmpresa + " ]";
+        return "lusano.marcacaodeconsulta.entity.FilialPK[ codFilial=" + codFilial + ", codEmpresaFilial=" + codEmpresaFilial + " ]";
     }
     
 }
