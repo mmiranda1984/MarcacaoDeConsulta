@@ -1,0 +1,44 @@
+<ui:composition template="/templates/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.prime.com.tr/ui">
+
+
+    <ui:define name="conteudo">
+        <h:form>
+            <center>
+            <p:growl id="messages" showDetail="false" life="1500" />  
+
+            <p:panel header="Login" style="width: 350px">
+       
+                <h:panelGrid  columns="2" >
+                    <h:outputText value="Empresa: " />
+                    <h:selectOneMenu value="#{loginBean.codEmpresaSelecionada}" id="cmbEmpresa" style="width: 250px">
+                        <f:selectItem itemLabel="Selecione a empresa" itemValue="" />  
+                        <f:selectItems value="#{loginBean.obterListaDeEmpresasAtivas}"/>
+                        <p:ajax update="cmbFilial" listener="#{loginBean.carregarListaDeFiliais()}" />  
+                    </h:selectOneMenu>
+
+                    <h:outputText value="Filial: "/>
+                    <h:selectOneMenu value="#{loginBean.codFilialSelecionada}" id="cmbFilial" style="width: 250px">
+                        <f:selectItem itemLabel="Selecione a filial" itemValue="" />  
+                        <f:selectItems value="#{loginBean.listaDeFiliaisDaEmpresaSelecionada}"/>
+                    </h:selectOneMenu>
+
+                    <h:outputText value="Usuário: "/>
+                    <p:inputText value="#{loginBean.loginUsuario}" style="width: 250px"/>
+
+                    <h:outputText value="Senha: "/>
+                    <p:password value="#{loginBean.senhaUsuario}" feedback="false" minLength="1" style="width: 250px"/>
+
+                </h:panelGrid>
+
+                <p:commandButton value="OK" update="messages" actionListener="#{loginBean.validarUsuario}"/>
+            </p:panel>
+            </center>
+        </h:form>
+
+    </ui:define>
+</ui:composition>

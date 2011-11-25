@@ -1,0 +1,248 @@
+<ui:composition template="/templates/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.prime.com.tr/ui">
+
+
+
+    <ui:define name="conteudo">
+
+        <h:form id="formPaciente">
+            <p:commandButton value="Incluir Paciente" update="cadastro" actionListener="#{principalBean.criarNovoPaciente}"
+                   oncomplete="dlgCadastro.show();"/>
+            <p:commandButton value="Logoff" actionListener="#{principalBean.efetuarLogoff}"/>
+            
+            <p:dataTable id="tabPaciente" var="paciente" value="#{principalBean.listaPacientes}" emptyMessage="Nenhum paciente encontrado"
+                 paginator="true" rows="10" paginatorPosition="bottom" 
+                 paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                 rowsPerPageTemplate="5,10,15">  
+
+                <p:column filterBy="#{paciente.numIdentificacaoPaciente}" sortBy="#{paciente.numIdentificacaoPaciente}"   
+                        headerText="Identificação do Paciente" filterMatchMode="startsWith" style="width:20%">  
+                    <h:outputText value="#{paciente.numIdentificacaoPaciente}" />  
+                </p:column>  
+
+
+                <p:column sortBy="#{paciente.nomPaciente}" filterBy="#{paciente.nomPaciente}">  
+                    <f:facet name="header">  
+                        <h:outputText value="Paciente" />  
+                    </f:facet>  
+                    <h:outputText value="#{paciente.nomPaciente}" />  
+                </p:column>  
+
+                <p:column filterBy="#{paciente.txtEmailPaciente}" sortBy="#{paciente.txtEmailPaciente}"   
+                        headerText="E-mail" filterMatchMode="startsWith" style="width:40%">  
+                    <h:outputText value="#{paciente.txtEmailPaciente}" />  
+                </p:column>  
+
+                <p:column filterBy="#{paciente.status}" sortBy="#{paciente.status}"   
+                        headerText="Status" filterMatchMode="startsWith" style="width:40%">  
+                    <h:outputText value="#{paciente.status}" />  
+                </p:column>  
+
+                <p:column style="width: 100px;">
+                    <f:facet name="header" >
+                    </f:facet>
+
+                    <center>
+                        <p:commandLink id="linkEdicao" onsuccess="dlgCadastro.show();" update="cadastro" value="Editar">
+                            <f:setPropertyActionListener target="#{principalBean.pacienteSelecionado}" value="#{paciente}"/>
+                        </p:commandLink>
+
+                        <p:commandLink id="linkExclusao" oncomplete="dialogExcluir.show();" value="Excluir">
+                            <f:setPropertyActionListener target="#{principalBean.pacienteSelecionado}" value="#{paciente}"/>
+                        </p:commandLink>
+
+                        <p:commandLink id="linkConsulta" oncomplete="dialogConsulta.show();" value="Consulta" update="consultaPaciente" action="#{principalBean.carregarListaDeConsultasDoPacienteSelecionado}">
+                            <f:setPropertyActionListener target="#{principalBean.pacienteSelecionado}" value="#{paciente}"/>
+                        </p:commandLink>
+                    </center>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+
+        <p:dialog header="Cadastro de Paciente" widgetVar="dlgCadastro" height="250" width="510"
+                  id="dialog" modal="true" resizable="false">
+            <h:form prependId="false">
+                <p:growl id="growl" showDetail="false" life="1500" />
+                <p:outputPanel id="cadastro">
+                    
+                    <h:panelGrid  columns="2" style="margin-bottom:10px">
+                        <h:outputLabel for="txtIdentificacao" value="Identificação :" />
+                        <p:inputText  style="width:150px;" id="txtIdentificacao" size="50" maxlength="10" value="#{principalBean.pacienteSelecionado.numIdentificacaoPaciente}" required="false"/>
+
+                        <h:outputLabel value="Nome :" />
+                        <p:inputText  style="width:400px;" id="txtNome" size="50" maxlength="100" value="#{principalBean.pacienteSelecionado.nomPaciente}" required="true" requiredMessage="O campo Nome é obrigatório"/>
+
+                        <h:outputLabel value="E-mail :" />
+                        <p:inputText  style="width:400px;" id="txtEmail" size="50" maxlength="100" value="#{principalBean.pacienteSelecionado.txtEmailPaciente}" required="true" requiredMessage="O campo E-mail é obrigatório"/>
+
+                        <h:outputLabel value="Telefone :" />
+                        <p:inputMask  style="width:150px;" id="txtTelefone" size="50" maxlength="13" value="#{principalBean.pacienteSelecionado.numContatoPaciente}" required="false" mask="(99)9999-9999"/>
+
+                        <h:outputLabel value="Status :" />
+                        <h:selectOneMenu style="width:100px;" id="cbmStatus"  value="#{principalBean.pacienteSelecionado.indAtivo}">
+                            <f:selectItem itemValue="true" itemLabel="Ativo"  />
+                            <f:selectItem itemValue="false" itemLabel="Inativo" />
+                        </h:selectOneMenu>
+                    </h:panelGrid>
+
+                    <p:outputPanel style="text-align:center;" layout="block">
+                        <p:commandButton actionListener="#{principalBean.salvarPaciente}" update="growl formPaciente" 
+                                         oncomplete="validarCamposObrigatorios(xhr, status, args)"
+                                         value="Salvar" id="btnSalvar" ajax="true"/>
+                        <p:spacer width="20"/>                        
+                        <p:commandButton type="button" onclick="dlgCadastro.hide();" value="Cancelar" image="btnCancelar"/>
+                    </p:outputPanel>
+                </p:outputPanel>
+            </h:form>
+        </p:dialog>
+
+        <script type="text/javascript">  
+            function validarCamposObrigatorios(xhr, status, args) {  
+                if(!args.validationFailed) {  
+                    dlgCadastro.hide();  
+                }  
+            }  
+        </script>  
+
+        <p:dialog header="Cadastro de Paciente" widgetVar="dialogExcluir" height="110" width="400"
+                  id="dialogE" modal="true" resizable="false">
+
+            <h:form prependId="false">
+                <p:growl id="growlExclusao" showDetail="false" life="1500" />
+                <p:outputPanel style="text-align:center;" layout="block">
+                    <h:panelGrid  columns="1"  width="100%" >
+                        <h:outputLabel value="Deseja realmente excluir o paciente ?"/>
+
+                        <p:outputPanel style="text-align:center; margin-top: 10px;" layout="block">
+
+                            <p:commandButton actionListener="#{principalBean.excluirPaciente}" update="growlExclusao formPaciente"
+                                             oncomplete="dialogExcluir.hide();"
+                                             value="Sim" id="btnExcluir" ajax="true" />
+                            <p:spacer width="20"/>
+                            <p:commandButton type="button" onclick="dialogExcluir.hide();" value="Não"/>
+                        </p:outputPanel>
+                    </h:panelGrid>
+                </p:outputPanel>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog header="Cadastro de Consulta" widgetVar="dialogExcluirConsulta" height="110" width="400"
+                  id="dialogEC" modal="true" resizable="false">
+
+            <h:form prependId="false">
+                <p:growl id="growlExclusaoConsulta" showDetail="false" life="1500" />
+                <p:outputPanel style="text-align:center;" layout="block">
+                    <h:panelGrid  columns="1"  width="100%" >
+                        <h:outputLabel value="Deseja realmente excluir a consulta ?"/>
+
+                        <p:outputPanel style="text-align:center; margin-top: 10px;" layout="block">
+
+                            <p:commandButton actionListener="#{principalBean.excluirConsulta}" update="growlExclusaoConsulta formConsulta"
+                                             oncomplete="dialogExcluirConsulta.hide();"
+                                             value="Sim" id="btnExcluirConsulta" ajax="true" />
+                            <p:spacer width="20"/>
+                            <p:commandButton type="button" onclick="dialogExcluirConsulta.hide();" value="Não"/>
+                        </p:outputPanel>
+                    </h:panelGrid>
+                </p:outputPanel>
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Consulta de Paciente" widgetVar="dialogConsulta" height="300" width="600"
+                  id="dialogC" modal="true" resizable="false">
+
+            <h:form prependId="false">
+                <p:growl id="growlConsulta" showDetail="false" life="1500" />
+                <p:outputPanel style="text-align:center;" layout="block" id="consultaPaciente">
+                    <p:commandButton value="Incluir Consulta" update="consultaPaciente" actionListener="#{principalBean.criarNovaConsulta}"
+                       oncomplete="dlgCadastroConsulta.show();" disabled="#{!principalBean.pacienteSelecionado.indAtivo}"/>
+                    <h:panelGrid  columns="1"  width="100%" >
+                        <p:dataTable id="tabConsulta" var="consulta" value="#{principalBean.listaConsultasDoPaciente}" emptyMessage="Nenhuma consulta encontrada">  
+
+                            <p:column sortBy="#{consulta.datConsulta}"  
+                                    headerText="Data da Consulta" filterMatchMode="startsWith" style="width:20%">  
+                                <h:outputText value="#{consulta.datConsulta}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>  
+                                </h:outputText>
+                            </p:column>  
+
+
+                            <p:column sortBy="#{consulta.horConsulta}">  
+                                <f:facet name="header">  
+                                    <h:outputText value="Hora da Consulta"/>
+                                </f:facet>  
+                                <h:outputText value="#{consulta.horConsulta}" />  
+                            </p:column>  
+
+                            <p:column sortBy="#{consulta.numDiasAntecedenciaEmail}"   
+                                    headerText="Intervalo E-mail" filterMatchMode="startsWith" style="width:40%">  
+                                <h:outputText value="#{consulta.numDiasAntecedenciaEmail}" />  
+                            </p:column>  
+
+                            <p:column style="width: 100px;">
+                                <f:facet name="header" >
+                                </f:facet>
+                                <center>
+                                    <p:commandLink id="linkEdicaoConsulta" onsuccess="dlgCadastroConsulta.show();" update="cadastroConsulta" value="Editar"
+                                                   disabled="#{!principalBean.pacienteSelecionado.indAtivo}">
+                                        <f:setPropertyActionListener target="#{principalBean.consultaSelecionada}" value="#{consulta}"/>
+                                    </p:commandLink>
+
+                                    <p:commandLink id="linkExclusaoConsulta" oncomplete="dialogExcluirConsulta.show();" value="Excluir"
+                                                   disabled="#{!principalBean.pacienteSelecionado.indAtivo}">
+                                        <f:setPropertyActionListener target="#{principalBean.consultaSelecionada}" value="#{consulta}"/>
+                                    </p:commandLink>
+                                </center>
+                            </p:column>
+
+
+                        </p:dataTable>
+
+                    </h:panelGrid>
+                </p:outputPanel>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog header="Cadastro de Consulta" widgetVar="dlgCadastroConsulta" height="250" width="510"
+                  id="dialogCC" modal="true" resizable="false">
+            <h:form prependId="false">
+                <p:growl id="growlCadastroConsulta" showDetail="false" life="1500" />
+                <p:outputPanel id="cadastroConsulta">
+                    
+                    <h:panelGrid  columns="2" style="margin-bottom:10px">
+                        <h:outputLabel for="txtData" value="Data :" />
+                        <p:calendar style="width:30px;" id="txtData" value="#{principalBean.consultaSelecionada.datConsulta}" pattern="dd/MM/yyyy" required="true" requiredMessage="O campo Data é obrigatório"/>   
+
+                        <h:outputLabel value="Hora :" />
+                        <p:inputMask mask="99:99" style="width:50px;" id="txtHora" maxlength="5" value="#{principalBean.consultaSelecionada.horConsulta}" required="true" requiredMessage="O campo Hora é obrigatório"/>
+
+                        <h:outputLabel value="Qtd Dias de Antecedência E-mail :" />
+                        <p:inputText  style="width:20px;" id="txtQtdDiasAntecedenciaEmail" maxlength="2" value="#{principalBean.consultaSelecionada.numDiasAntecedenciaEmail}" required="true" requiredMessage="O campo Qtd Dias de Antecedência E-mail é obrigatório"/>
+                    </h:panelGrid>
+
+                    <p:outputPanel style="text-align:center;" layout="block">
+                        <p:commandButton actionListener="#{principalBean.salvarConsulta}" update="growlConsulta consultaPaciente" 
+                                         oncomplete="validarCamposObrigatoriosConsulta(xhr, status, args)"
+                                         value="Salvar" id="btnSalvarConsulta" ajax="true"/>
+                        <p:spacer width="20"/>                        
+                        <p:commandButton type="button" onclick="dlgCadastroConsulta.hide();" value="Cancelar" image="btnCancelar"/>
+                    </p:outputPanel>
+                </p:outputPanel>
+            </h:form>
+        </p:dialog>
+        
+        <script type="text/javascript">  
+            function validarCamposObrigatoriosConsulta(xhr, status, args) {  
+                if(!args.validationFailed) {  
+                    dlgCadastroConsulta.hide();  
+                }  
+            }  
+        </script>  
+
+    </ui:define>
+</ui:composition>
+            

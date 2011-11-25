@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+
+        <title>Marcação de Consultas</title>
+
+        <style type="text/css">
+            .ui-widget {
+                font-size: 12px !important;
+            }
+            .ui-growl {
+                left:35%;
+                top:35%;
+            }
+            .wijmo-wijmenu
+            {
+                width: 200px;
+                /*background: -moz-linear-gradient(top, #1874CD, #3A5FCD);*/
+            }
+            .ui-datatable-even {
+                background-color: #FFFFFF;
+            }
+            .ui-datatable-odd {
+                background-color: #FFFACD;
+            }
+
+            #rodape {
+                position: absolute;
+                bottom: 0;
+                width: 98%;
+                text-align: right;
+            }
+
+        </style>
+
+    </h:head>
+    <h:body>
+        <h:outputScript library="js" target="head" name="modalDialog.js"/>
+        <ui:include src="fragTopo.xhtml" />
+        <ui:insert name="conteudo"/>
+        <ui:include src="fragRodape.xhtml" /> 
+    </h:body>
+</html>

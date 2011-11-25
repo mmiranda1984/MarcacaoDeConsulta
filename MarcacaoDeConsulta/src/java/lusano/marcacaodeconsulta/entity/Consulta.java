@@ -33,7 +33,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Consulta.findByDatConsulta", query = "SELECT c FROM Consulta c WHERE c.datConsulta = :datConsulta"),
     @NamedQuery(name = "Consulta.findByHorConsulta", query = "SELECT c FROM Consulta c WHERE c.horConsulta = :horConsulta"),
     @NamedQuery(name = "Consulta.findByNumDiasAntecedenciaEmail", query = "SELECT c FROM Consulta c WHERE c.numDiasAntecedenciaEmail = :numDiasAntecedenciaEmail"),
-    @NamedQuery(name = "Consulta.removeByCodPacienteConsulta", query = "DELETE FROM Consulta c WHERE c.consultaPK.codPacienteConsulta = :codPacienteConsulta")})
+    @NamedQuery(name = "Consulta.removeByCodPacienteConsulta", query = "DELETE FROM Consulta c WHERE c.consultaPK.codPacienteConsulta = :codPacienteConsulta"),
+    @NamedQuery(name = "Consulta.findByPacienteDatConsulta", query = "SELECT c FROM Consulta c WHERE c.consultaPK.codPacienteConsulta = :codPacienteConsulta AND c.datConsulta = :datConsulta")})
 public class Consulta implements Serializable {
     @Column(name = "DAT_CONSULTA")
     @Temporal(TemporalType.DATE)
