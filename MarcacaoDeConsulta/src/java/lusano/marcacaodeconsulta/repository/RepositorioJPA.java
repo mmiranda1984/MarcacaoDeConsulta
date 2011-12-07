@@ -44,5 +44,16 @@ public class RepositorioJPA<E> {
         return JPAUtil.getEntityManager();
     }
     
+    public void iniciarTransacao(){
+        getEntityManager().getTransaction().begin();
+    }
+    
+    public void confirmarTransacao(){
+        getEntityManager().getTransaction().commit();
+    }
+    
+    public void abortarTransacao(){
+        getEntityManager().getTransaction().rollback();
+    }
     
 }

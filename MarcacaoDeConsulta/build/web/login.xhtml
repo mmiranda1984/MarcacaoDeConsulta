@@ -35,7 +35,12 @@
 
                 </h:panelGrid>
 
-                <p:commandButton value="OK" update="messages" actionListener="#{loginBean.validarUsuario}"/>
+                <p:commandLink actionListener="#{loginBean.gerarNovaSenhaEEnviarPorEmail}" update="messages" value="Esqueci a Senha"/>
+                <br/>
+                <br/>
+                <p:commandLink actionListener="#{loginBean.validarUsuario}" update="messages">
+                    <h:graphicImage style="border: none" alt="Clique para entrar no sistema" url="/images/Login.png"/>
+                </p:commandLink>
             </p:panel>
             </center>
         </h:form>

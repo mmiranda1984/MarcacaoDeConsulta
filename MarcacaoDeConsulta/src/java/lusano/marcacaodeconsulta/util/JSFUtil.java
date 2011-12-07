@@ -12,6 +12,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import lusano.enviaremail.util.EnviarEmail;
+import lusano.marcacaodeconsulta.entity.Usuario;
 import lusano.marcacaodeconsulta.valueobject.MensagemRetorno;
 import lusano.marcacaodeconsulta.valueobject.TipoMensagemRetorno;
 import org.primefaces.context.RequestContext;
@@ -83,5 +85,20 @@ public class JSFUtil {
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         HttpSession session = request.getSession();
         session.removeAttribute(chave);
+    }
+
+    public static String obterValorPropriedade(String nomePropriedade, String nomeCampo){
+        ResourceBundle resource = ResourceBundle.getBundle(nomePropriedade);
+        return resource.getString(nomeCampo);
+    }
+
+    public static Boolean enviarEmail(Usuario usuario, String tituloEmail, String corpoMensagem, String copiaPara) {
+        EnviarEmail mail = new EnviarEmail();
+            //EmailUtil mail = new EmailUtil();
+
+            return mail.enviarEmail(usuario.getFilial().getTxtEmailFilial(),
+                                    copiaPara,
+                                    tituloEmail,
+                                    corpoMensagem);
     }
 }

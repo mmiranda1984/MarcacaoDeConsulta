@@ -27,10 +27,11 @@ public class RepositorioPacienteImpl extends RepositorioJPA<Paciente> implements
         }
     }
     
-    public Paciente obterPacientePorNumeroIdentificacao(String numIdentificacao){
+    public Paciente obterPacienteFilialPorNumeroIdentificacao(int codFilial, String numIdentificacao){
         Query query;
-        query = getEntityManager().createNamedQuery("Paciente.findByNumIdentificacaoPaciente", Paciente.class);
+        query = getEntityManager().createNamedQuery("Paciente.findByNumIdentificacaoPacienteFilial", Paciente.class);
         query.setParameter("numIdentificacaoPaciente", numIdentificacao);
+        query.setParameter("codFilialPaciente", codFilial);
 
         try {
             return (Paciente) query.getSingleResult();

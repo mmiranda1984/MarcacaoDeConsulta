@@ -15,4 +15,5 @@ public interface RepositorioUsuario {
     Usuario obterUsuarioFilialLoginSenha(int codFilial, String login, String senha);
     Usuario obterUsuarioFilialLogin(int codFilial, String login);
     
+    void salvarUsuario(Usuario usuario);
 }

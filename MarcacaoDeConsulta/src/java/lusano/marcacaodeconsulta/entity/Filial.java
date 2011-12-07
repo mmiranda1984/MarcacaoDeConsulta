@@ -34,8 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Filial.findByNomFilial", query = "SELECT f FROM Filial f WHERE f.nomFilial = :nomFilial"),
     @NamedQuery(name = "Filial.findByTxtEmailFilial", query = "SELECT f FROM Filial f WHERE f.txtEmailFilial = :txtEmailFilial"),
     @NamedQuery(name = "Filial.findByIndAtivo", query = "SELECT f FROM Filial f WHERE f.indAtivo = :indAtivo"),
-    @NamedQuery(name = "Filial.todasAsFiliasAtivasDeUmaEmpresa", query = "SELECT f FROM Filial f WHERE f.filialPK.codEmpresaFilial = :codEmpresaFilial and f.indAtivo = 1"),
-})
+    @NamedQuery(name = "Filial.todasAsFiliasAtivasDeUmaEmpresa", query = "SELECT f FROM Filial f WHERE f.filialPK.codEmpresaFilial = :codEmpresaFilial and f.indAtivo = 1")})
 public class Filial implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId

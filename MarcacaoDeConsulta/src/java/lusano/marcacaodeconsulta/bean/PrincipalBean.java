@@ -6,9 +6,12 @@ package lusano.marcacaodeconsulta.bean;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
+import lusano.criptografiadesenha.util.CriptografiaSenha;
 import lusano.marcacaodeconsulta.entity.Consulta;
 import lusano.marcacaodeconsulta.entity.ConsultaPK;
 import lusano.marcacaodeconsulta.entity.Paciente;
@@ -16,6 +19,7 @@ import lusano.marcacaodeconsulta.entity.PacientePK;
 import lusano.marcacaodeconsulta.factory.FabricaServico;
 import lusano.marcacaodeconsulta.service.ServicoConsulta;
 import lusano.marcacaodeconsulta.service.ServicoPaciente;
+import lusano.marcacaodeconsulta.service.ServicoUsuario;
 import lusano.marcacaodeconsulta.util.JSFUtil;
 
 /**
@@ -31,6 +35,8 @@ public class PrincipalBean implements Serializable{
     private Consulta consultaSelecionada;
     private List<Consulta> listaConsultasDoPaciente;
     private int codFilialSessao = (Integer)JSFUtil.obterObjetoNaSessao("codFilial");
+    private String novaSenha;
+    private String novaSenhaConfirmacao;
     
     public PrincipalBean(){
         ServicoPaciente servico = FabricaServico.obterServicoDePaciente();
@@ -124,7 +130,7 @@ public class PrincipalBean implements Serializable{
     public void efetuarLogoff(ActionEvent e){
         JSFUtil.removerObjetoDaSessao("codEmpresa");
         JSFUtil.removerObjetoDaSessao("codFilial");
-        JSFUtil.removerObjetoDaSessao("codUsuario");
+        JSFUtil.removerObjetoDaSessao("usuario");
         JSFUtil.redirecionarParaAPagina("login.xhtml");
     }
 
@@ -158,4 +164,47 @@ public class PrincipalBean implements Serializable{
     public void setListaConsultasDoPaciente(List<Consulta> listaConsultasDoPaciente) {
         this.listaConsultasDoPaciente = listaConsultasDoPaciente;
     }
+
+    /**
+     * @return the novaSenha
+     */
+    public String getNovaSenha() {
+        return novaSenha;
+    }
+
+    /**
+     * @param novaSenha the novaSenha to set
+     */
+    public void setNovaSenha(String novaSenha) {
+        this.novaSenha = novaSenha;
+    }
+
+    /**
+     * @return the novaSenhaConfirmacao
+     */
+    public String getNovaSenhaConfirmacao() {
+        return novaSenhaConfirmacao;
+    }
+
+    /**
+     * @param novaSenhaConfirmacao the novaSenhaConfirmacao to set
+     */
+    public void setNovaSenhaConfirmacao(String novaSenhaConfirmacao) {
+        this.novaSenhaConfirmacao = novaSenhaConfirmacao;
+    }
+    
+    public void alterarSenha(){
+        ServicoUsuario servico = FabricaServico.obterServicoDeUsuario();
+        try {
+            servico.AlterarSenha(CriptografiaSenha.criptografarSenha(novaSenha), CriptografiaSenha.criptografarSenha(novaSenhaConfirmacao));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    public void inicializarCamposAlteracaoSenha(ActionEvent e){
+        novaSenha = "";
+        novaSenhaConfirmacao = "";
+    }
+    
 }

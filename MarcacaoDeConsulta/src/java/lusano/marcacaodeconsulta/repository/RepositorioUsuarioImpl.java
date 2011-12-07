@@ -42,5 +42,9 @@ public class RepositorioUsuarioImpl extends RepositorioJPA<Usuario> implements R
             return null;
         }
     }
-    
+ 
+    public void salvarUsuario(Usuario usuario){
+        if (usuario.getUsuarioPK().getCodUsuario() > 0)
+            merge(usuario);
+    }
 }

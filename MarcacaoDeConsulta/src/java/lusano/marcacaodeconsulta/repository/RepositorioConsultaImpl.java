@@ -6,6 +6,7 @@ package lusano.marcacaodeconsulta.repository;
 
 import java.util.Date;
 import java.util.List;
+import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import lusano.marcacaodeconsulta.entity.Consulta;
@@ -36,7 +37,20 @@ public class RepositorioConsultaImpl extends RepositorioJPA<Consulta> implements
     }
 
     public void excluirConsulta(Consulta consulta){
-        excluir(consulta);
+        //excluir(consulta); -- Verificar pq essa rotina não está funcionando para excluir uma consulta
+
+        Query query;
+        query = getEntityManager().createNamedQuery("Consulta.removeByCodPacienteConsultaCodConsulta", Consulta.class);
+        query.setParameter("codPacienteConsulta", consulta.getConsultaPK().getCodPacienteConsulta());
+        query.setParameter("codConsulta", consulta.getConsultaPK().getCodConsulta());
+
+        iniciarTransacao();
+        try {
+            query.executeUpdate();
+            confirmarTransacao();
+        } catch (Exception e) {
+            abortarTransacao();
+        }
     }
     
     public void excluirTodasAsConsultasDoPaciente(int codPaciente){

@@ -25,8 +25,10 @@ public class ServicoConsultaImpl implements ServicoConsulta{
     public void salvarConsulta(Paciente paciente, Consulta consulta){
         RepositorioConsulta rep = FabricaRepositorio.obterRepositorioDeConsulta();
         Consulta consultaComparacao = rep.obterConsultaDoPacientePorData(paciente.getPacientePK().getCodPaciente(), consulta.getDatConsulta());
-        if (consultaComparacao != null){
+        if ((consultaComparacao != null) && (!consultaComparacao.getConsultaPK().equals(consulta.getConsultaPK()))){
             JSFUtil.informarMensagemDeErro("Já existe uma consulta cadastrada nesta data para esse paciente");
+            if (consulta.getConsultaPK().getCodConsulta() > 0)
+                rep.atualizarConsulta(consulta);
         } else {
             rep.salvarConsulta(consulta);
         }

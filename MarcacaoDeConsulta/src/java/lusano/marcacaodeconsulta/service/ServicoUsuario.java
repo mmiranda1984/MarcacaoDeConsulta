@@ -16,4 +16,7 @@ public interface ServicoUsuario {
     Usuario obterUsuarioFilialAtivoPorLogin(int codFilial, String login);
     
     Usuario obterUsuarioValidoParaAcessoAoSistema(int codFilial, String login, String senha);
+    
+    void AlterarSenha(String novaSenha, String novaSenhaConfirmacao);
+    void gerarNovaSenhaEEnviarPorEmail(int codFilial, String login);
 }

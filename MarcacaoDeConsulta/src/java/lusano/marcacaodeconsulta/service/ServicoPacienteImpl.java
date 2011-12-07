@@ -23,9 +23,9 @@ public class ServicoPacienteImpl implements ServicoPaciente{
     
     public void salvarPaciente(Paciente paciente){
         RepositorioPaciente rep = FabricaRepositorio.obterRepositorioDePaciente();
-        
+        int codFilial = (Integer)JSFUtil.obterObjetoNaSessao("codFilial");
         if (paciente.getNumIdentificacaoPaciente() != "") {
-            Paciente pacienteComparacao = rep.obterPacientePorNumeroIdentificacao(paciente.getNumIdentificacaoPaciente());
+            Paciente pacienteComparacao = rep.obterPacienteFilialPorNumeroIdentificacao(codFilial, paciente.getNumIdentificacaoPaciente());
 
             if ((pacienteComparacao != null) &&
                     (!pacienteComparacao.getPacientePK().equals(paciente.getPacientePK()))){
@@ -48,8 +48,4 @@ public class ServicoPacienteImpl implements ServicoPaciente{
         }
     }
     
-    public Paciente obterPacientePorNumeroIdentificacao(String numIdentificacao){
-        RepositorioPaciente rep = FabricaRepositorio.obterRepositorioDePaciente();
-        return rep.obterPacientePorNumeroIdentificacao(numIdentificacao);
-    }
 }

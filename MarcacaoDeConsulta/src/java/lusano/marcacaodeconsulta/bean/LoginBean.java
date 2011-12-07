@@ -11,6 +11,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
+import lusano.criptografiadesenha.util.CriptografiaSenha;
 import lusano.marcacaodeconsulta.entity.Empresa;
 import lusano.marcacaodeconsulta.entity.Filial;
 import lusano.marcacaodeconsulta.entity.Usuario;
@@ -62,11 +63,18 @@ public class LoginBean implements Serializable {
     
     public void validarUsuario(ActionEvent e){
         ServicoUsuario servico = FabricaServico.obterServicoDeUsuario();
-        Usuario usuario = servico.obterUsuarioValidoParaAcessoAoSistema(codFilialSelecionada, loginUsuario, senhaUsuario);
+        Usuario usuario;
+        try {
+            usuario = servico.obterUsuarioValidoParaAcessoAoSistema(codFilialSelecionada, loginUsuario, CriptografiaSenha.criptografarSenha(senhaUsuario));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            usuario = null;
+        }
+
         if (usuario != null) {
             JSFUtil.adicionarObjetoNaSessao("codEmpresa", codEmpresaSelecionada);
             JSFUtil.adicionarObjetoNaSessao("codFilial", codFilialSelecionada);
-            JSFUtil.adicionarObjetoNaSessao("codUsuario", usuario.getUsuarioPK().getCodUsuario());
+            JSFUtil.adicionarObjetoNaSessao("usuario", usuario);
             JSFUtil.redirecionarParaAPagina("principal.xhtml");
         }
     }
@@ -141,4 +149,8 @@ public class LoginBean implements Serializable {
         this.senhaUsuario = senhaUsuario;
     }
 
+    public void gerarNovaSenhaEEnviarPorEmail(ActionEvent e){
+        ServicoUsuario servico = FabricaServico.obterServicoDeUsuario();
+        servico.gerarNovaSenhaEEnviarPorEmail(codFilialSelecionada, loginUsuario);
+    }
 }

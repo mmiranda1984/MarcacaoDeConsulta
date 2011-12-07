@@ -33,7 +33,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Usuario.findByTxtSenhaUsuario", query = "SELECT u FROM Usuario u WHERE u.txtSenhaUsuario = :txtSenhaUsuario"),
     @NamedQuery(name = "Usuario.findByIndAtivo", query = "SELECT u FROM Usuario u WHERE u.indAtivo = :indAtivo"),
     @NamedQuery(name = "Usuario.findByFilialLoginAtivo", query = "SELECT u FROM Usuario u WHERE u.usuarioPK.codFilialUsuario = :codFilialUsuario AND u.txtLoginUsuario = :txtLoginUsuario AND u.indAtivo = 1"),
-    @NamedQuery(name = "Usuario.findByFilialLoginSenhaAtivo", query = "SELECT u FROM Usuario u WHERE u.usuarioPK.codFilialUsuario = :codFilialUsuario AND u.txtLoginUsuario = :txtLoginUsuario AND u.txtSenhaUsuario = :txtSenhaUsuario AND u.indAtivo = 1")})
+    @NamedQuery(name = "Usuario.findByFilialLoginSenhaAtivo", query = "SELECT u FROM Usuario u WHERE u.usuarioPK.codFilialUsuario = :codFilialUsuario AND u.txtLoginUsuario = :txtLoginUsuario AND u.txtSenhaUsuario = :txtSenhaUsuario AND u.indAtivo = 1")
+    })
 public class Usuario implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
