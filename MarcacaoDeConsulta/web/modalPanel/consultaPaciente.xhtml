@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+    <body>
+        <p:dialog header="Consulta de Paciente" widgetVar="dialogConsulta" height="300" width="600"
+                  id="dialogC" modal="true" resizable="false">
+
+            <h:form prependId="false" id="formConsulta">
+                <p:growl id="growlConsulta" showDetail="false" life="1500" />
+                <p:outputPanel style="text-align:center;" layout="block" id="consultaPaciente">
+
+                    <p:toolbar>  
+                        <p:toolbarGroup align="left">  
+                            <p:spacer width="20" />
+                            <p:commandLink actionListener="#{principalBean.criarNovaConsulta}" update="cadastroConsulta" oncomplete="dlgCadastroConsulta.show();" disabled="#{!principalBean.pacienteSelecionado.indAtivo}">
+                                <h:graphicImage style="border: none" alt="Clique para cadastrar uma nova consulta" url="/images/adicionarConsulta.png"/>
+                            </p:commandLink>
+                        </p:toolbarGroup>  
+                    </p:toolbar>  
+
+                    <p:spacer height="20" />
+
+                    <h:panelGrid  columns="1"  width="100%" >
+
+                        <p:dataTable id="tabConsulta" var="consulta" value="#{principalBean.listaConsultasDoPaciente}" emptyMessage="Nenhuma consulta encontrada"
+                             paginator="true" rows="5" paginatorPosition="bottom" 
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                             rowsPerPageTemplate="5">  
+
+                            <p:column sortBy="#{consulta.datConsulta}"  
+                                    headerText="Data da Consulta" filterMatchMode="startsWith" style="width:20%">  
+                                <h:outputText value="#{consulta.datConsulta}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>  
+                                </h:outputText>
+                            </p:column>  
+
+
+                            <p:column sortBy="#{consulta.horConsulta}" style="width:20%">  
+                                <f:facet name="header">  
+                                    <h:outputText value="Hora da Consulta"/>
+                                </f:facet>  
+                                <h:outputText value="#{consulta.horConsulta}" />  
+                            </p:column>  
+
+                            <p:column sortBy="#{consulta.numDiasAntecedenciaEmail}"   
+                                    headerText="Intervalo E-mail" filterMatchMode="startsWith" style="width:40%">  
+                                <h:outputText value="#{consulta.numDiasAntecedenciaEmail}" />  
+                            </p:column>  
+
+                            <p:column style="width: 20%;">
+                                <f:facet name="header" >
+                                </f:facet>
+                                <center>
+                                    <p:commandLink id="linkEdicaoConsulta" onsuccess="dlgCadastroConsulta.show();" update="cadastroConsulta" disabled="#{!principalBean.pacienteSelecionado.indAtivo}">
+                                        <f:setPropertyActionListener target="#{principalBean.consultaSelecionada}" value="#{consulta}"/>
+                                        <h:graphicImage style="border: none" alt="Clique para editar a consulta" url="/images/editarConsulta.png"/>
+                                    </p:commandLink>
+
+                                    <h:graphicImage style="border: none" url="/images/pontoBranco.png"/>
+
+                                    <p:commandLink id="linkExclusaoConsulta" oncomplete="dialogExcluirConsulta.show();" disabled="#{!principalBean.pacienteSelecionado.indAtivo}">
+                                        <f:setPropertyActionListener target="#{principalBean.consultaSelecionada}" value="#{consulta}"/>
+                                        <h:graphicImage style="border: none" alt="Clique para excluir a consulta" url="/images/removerConsulta.png"/>
+                                    </p:commandLink>
+                                </center>
+                            </p:column>
+
+
+                        </p:dataTable>
+
+                    </h:panelGrid>
+                </p:outputPanel>
+            </h:form>
+        </p:dialog>
+    </body>
+</html>

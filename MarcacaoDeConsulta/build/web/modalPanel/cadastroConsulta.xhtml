@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+    <body>
+        <p:dialog header="Cadastro de Consulta" widgetVar="dlgCadastroConsulta" height="180" width="410"
+                  id="dialogCC" modal="true" resizable="false">
+            <h:form prependId="false">
+                <p:growl id="growlCadastroConsulta" showDetail="false" life="1500" />
+                <p:outputPanel id="cadastroConsulta">
+                    
+                    <h:panelGrid  columns="2" style="margin-bottom:10px">
+                        <h:outputLabel for="txtData" value="Data :" />
+                        <p:calendar style="width:25px;" id="txtData" value="#{principalBean.consultaSelecionada.datConsulta}" pattern="dd/MM/yyyy" required="true" requiredMessage="O campo Data é obrigatório"/>   
+
+                        <h:outputLabel value="Hora :" />
+                        <p:inputMask mask="99:99" style="width:40px;" id="txtHora" maxlength="5" value="#{principalBean.consultaSelecionada.horConsulta}" required="true" requiredMessage="O campo Hora é obrigatório"/>
+
+                        <h:outputLabel value="Qtd Dias de Antecedência E-mail :" />
+                        <p:inputText  style="width:20px;" id="txtQtdDiasAntecedenciaEmail" maxlength="2" value="#{principalBean.consultaSelecionada.numDiasAntecedenciaEmail}" required="true" requiredMessage="O campo Qtd Dias de Antecedência E-mail é obrigatório"/>
+                    </h:panelGrid>
+
+                    <p:outputPanel style="text-align:center;" layout="block">
+
+                        <p:commandLink id="btnSalvarConsulta" oncomplete="validarCamposObrigatoriosConsulta(xhr, status, args)" update="growlConsulta consultaPaciente" actionListener="#{principalBean.salvarConsulta}" ajax="true">
+                            <h:graphicImage style="border: none" alt="Clique para salvar os dados" url="/images/Salvar.png"/>
+                        </p:commandLink>
+
+                        <p:spacer width="30"/>                        
+
+                        <p:commandLink id="btnCancelarConsulta" actionListener="#{principalBean.cancelarConsulta}" oncomplete="dlgCadastroConsulta.hide();">
+                            <h:graphicImage style="border: none" alt="Clique para cancelar os dados" url="/images/Cancelar.png"/>
+                        </p:commandLink>
+
+                    </p:outputPanel>
+                </p:outputPanel>
+            </h:form>
+        </p:dialog>
+        
+        <script type="text/javascript">  
+            function validarCamposObrigatoriosConsulta(xhr, status, args) {  
+                if(!args.validationFailed) {  
+                    dlgCadastroConsulta.hide();  
+                }  
+            }  
+        </script>  
+    </body>
+</html>

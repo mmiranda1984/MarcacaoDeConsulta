@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+    <body>
+        <p:dialog header="Dados da Filial" widgetVar="dlgDadosFilial" height="150" width="460"
+                  id="dialogDF" modal="true" resizable="false">
+            <h:form prependId="false">
+                <p:growl id="growlDadosFilial" showDetail="false" life="1500" />
+                <p:outputPanel id="dadosFilial">
+                    
+                    <h:panelGrid  columns="2" style="margin-bottom:10px">
+                        <h:outputLabel value="E-mail :" />
+                        <p:inputText  style="width:250px;" id="txtEmailFilial" maxlength="100" value="#{principalBean.filialSessao.txtEmailFilial}" required="true" requiredMessage="O campo E-mail é obrigatório"/>
+
+                        <h:outputLabel value="Receber cópia de E-mail :" />
+                        <h:selectOneMenu style="width:70px;" id="cbmCopiaEmail"  value="#{principalBean.filialSessao.indReceberCopiaEmail}" required="true" requiredMessage="O campo Receber cópia de E-mail é obrigatório">
+                            <f:selectItem itemValue="true" itemLabel="Sim"  />
+                            <f:selectItem itemValue="false" itemLabel="Não" />
+                        </h:selectOneMenu>
+                    </h:panelGrid>
+
+                    <p:outputPanel style="text-align:center;" layout="block">
+
+                        <p:commandLink id="btnSalvarFilial" oncomplete="validarCamposObrigatoriosDadosFilial(xhr, status, args)" update="growlDadosFilial dadosFilial" actionListener="#{principalBean.salvarFilialDaSessao}" ajax="true">
+                            <h:graphicImage style="border: none" alt="Clique para salvar os dados" url="/images/Salvar.png"/>
+                        </p:commandLink>
+
+                        <p:spacer width="30"/>                        
+
+                        <p:commandLink id="btnCancelarFilial" actionListener="#{principalBean.cancelarFilialDaSessao}" oncomplete="dlgDadosFilial.hide();">
+                            <h:graphicImage style="border: none" alt="Clique para cancelar os dados" url="/images/Cancelar.png"/>
+                        </p:commandLink>
+
+                    </p:outputPanel>
+                </p:outputPanel>
+            </h:form>
+        </p:dialog>
+        
+        <script type="text/javascript">  
+            function validarCamposObrigatoriosDadosFilial(xhr, status, args) {  
+                if(!args.validationFailed) {  
+                    dlgDadosFilial.hide();  
+                }  
+            }  
+        </script>  
+    </body>
+</html>

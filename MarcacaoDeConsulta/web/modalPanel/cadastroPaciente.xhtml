@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+    <body>
+        <p:dialog header="Cadastro de Paciente" widgetVar="dlgCadastro" height="230" width="480"
+                  id="dialog" modal="true" resizable="false">
+            <h:form prependId="false">
+                <p:growl id="growl" showDetail="false" life="1500" />
+                <p:outputPanel id="cadastro">
+                    
+                    <h:panelGrid  columns="2" style="margin-bottom:10px">
+                        <h:outputLabel for="txtIdentificacao" value="Identificação :" />
+                        <p:inputText  style="width:100px;" id="txtIdentificacao" maxlength="10" value="#{principalBean.pacienteSelecionado.numIdentificacaoPaciente}" required="false"/>
+
+                        <h:outputLabel value="Nome :" />
+                        <p:inputText  style="width:350px;" id="txtNome" maxlength="100" value="#{principalBean.pacienteSelecionado.nomPaciente}" required="true" requiredMessage="O campo Nome é obrigatório"/>
+
+                        <h:outputLabel value="E-mail :" />
+                        <p:inputText  style="width:350px;" id="txtEmail" maxlength="100" value="#{principalBean.pacienteSelecionado.txtEmailPaciente}" required="true" requiredMessage="O campo E-mail é obrigatório"/>
+
+                        <h:outputLabel value="Telefone :" />
+                        <p:inputMask  style="width:100px;" id="txtTelefone" maxlength="13" value="#{principalBean.pacienteSelecionado.numContatoPaciente}" required="false" mask="(99)9999-9999"/>
+
+                        <h:outputLabel value="Status :" />
+                        <h:selectOneMenu style="width:100px;" id="cbmStatus"  value="#{principalBean.pacienteSelecionado.indAtivo}">
+                            <f:selectItem itemValue="true" itemLabel="Ativo"  />
+                            <f:selectItem itemValue="false" itemLabel="Inativo" />
+                        </h:selectOneMenu>
+                    </h:panelGrid>
+
+                    <p:outputPanel style="text-align:center;" layout="block">
+                        <p:commandLink id="btnSalvar" oncomplete="validarCamposObrigatorios(xhr, status, args)" update="growl formPaciente" actionListener="#{principalBean.salvarPaciente}" ajax="true">
+                            <h:graphicImage style="border: none" alt="Clique para gravar os dados" url="/images/Salvar.png"/>
+                        </p:commandLink>
+
+                        <p:spacer width="30"/>                        
+
+                        <p:commandLink id="btnCancelar" actionListener="#{principalBean.cancelarPaciente}" oncomplete="dlgCadastro.hide();">
+                            <h:graphicImage style="border: none" alt="Clique para cancelar os dados" url="/images/Cancelar.png"/>
+                        </p:commandLink>
+                    </p:outputPanel>
+                </p:outputPanel>
+            </h:form>
+        </p:dialog>
+
+        <script type="text/javascript">  
+            function validarCamposObrigatorios(xhr, status, args) {  
+                if(!args.validationFailed) {  
+                    dlgCadastro.hide();  
+                }  
+            }  
+        </script>  
+    </body>
+</html>
