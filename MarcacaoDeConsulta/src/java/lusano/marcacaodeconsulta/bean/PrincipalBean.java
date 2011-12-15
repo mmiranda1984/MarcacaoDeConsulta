@@ -6,18 +6,18 @@ package lusano.marcacaodeconsulta.bean;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.event.ActionEvent;
 import lusano.criptografiadesenha.util.CriptografiaSenha;
 import lusano.marcacaodeconsulta.entity.Consulta;
 import lusano.marcacaodeconsulta.entity.ConsultaPK;
+import lusano.marcacaodeconsulta.entity.Filial;
 import lusano.marcacaodeconsulta.entity.Paciente;
 import lusano.marcacaodeconsulta.entity.PacientePK;
 import lusano.marcacaodeconsulta.factory.FabricaServico;
 import lusano.marcacaodeconsulta.service.ServicoConsulta;
+import lusano.marcacaodeconsulta.service.ServicoFilial;
 import lusano.marcacaodeconsulta.service.ServicoPaciente;
 import lusano.marcacaodeconsulta.service.ServicoUsuario;
 import lusano.marcacaodeconsulta.util.JSFUtil;
@@ -27,7 +27,7 @@ import lusano.marcacaodeconsulta.util.JSFUtil;
  * @author mmiranda1984
  */
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class PrincipalBean implements Serializable{
     
     private Paciente pacienteSelecionado;
@@ -35,58 +35,86 @@ public class PrincipalBean implements Serializable{
     private Consulta consultaSelecionada;
     private List<Consulta> listaConsultasDoPaciente;
     private int codFilialSessao = (Integer)JSFUtil.obterObjetoNaSessao("codFilial");
+    private Filial filialSessao = null;
     private String novaSenha;
     private String novaSenhaConfirmacao;
+    private String IdentificacaoBusca = "";
+    private String NomeBusca = "";
+    private String EmailBusca = "";
+    private int AtivoBusca = -1;
+    private int codigoFiltroExecutadoListaPacientes = 0;
     
-    public PrincipalBean(){
-        ServicoPaciente servico = FabricaServico.obterServicoDePaciente();
-        listaPacientes = servico.obterTodosOsPacientesDaFilial(codFilialSessao);
+    
+    /**
+     * @return the filialSessao
+     */
+    public Filial getFilialSessao() {
+        return filialSessao;
+    }
+
+    /**
+     * @param filialSessao the filialSessao to set
+     */
+    public void setFilialSessao(Filial filialSessao) {
+        this.filialSessao = filialSessao;
+    }
+
+    /**
+     * @return the IdentificacaoBusca
+     */
+    public String getIdentificacaoBusca() {
+        return IdentificacaoBusca;
+    }
+
+    /**
+     * @param IdentificacaoBusca the IdentificacaoBusca to set
+     */
+    public void setIdentificacaoBusca(String IdentificacaoBusca) {
+        this.IdentificacaoBusca = IdentificacaoBusca;
+    }
+
+    /**
+     * @return the NomeBusca
+     */
+    public String getNomeBusca() {
+        return NomeBusca;
+    }
+
+    /**
+     * @param NomeBusca the NomeBusca to set
+     */
+    public void setNomeBusca(String NomeBusca) {
+        this.NomeBusca = NomeBusca;
+    }
+
+    /**
+     * @return the EmailBusca
+     */
+    public String getEmailBusca() {
+        return EmailBusca;
+    }
+
+    /**
+     * @param EmailBusca the EmailBusca to set
+     */
+    public void setEmailBusca(String EmailBusca) {
+        this.EmailBusca = EmailBusca;
+    }
+
+    /**
+     * @return the AtivoBusca
+     */
+    public int getAtivoBusca() {
+        return AtivoBusca;
+    }
+
+    /**
+     * @param AtivoBusca the AtivoBusca to set
+     */
+    public void setAtivoBusca(int AtivoBusca) {
+        this.AtivoBusca = AtivoBusca;
     }
     
-    public void criarNovoPaciente(ActionEvent e){
-        PacientePK pacienteChave = new PacientePK();
-        pacienteChave.setCodFilialPaciente((Integer)JSFUtil.obterObjetoNaSessao("codFilial"));
-        
-        pacienteSelecionado = new Paciente();
-        pacienteSelecionado.setPacientePK(pacienteChave);
-    }
-
-    public void salvarPaciente(ActionEvent e){
-        ServicoPaciente servico = FabricaServico.obterServicoDePaciente();
-        servico.salvarPaciente(pacienteSelecionado);
-
-        listaPacientes = servico.obterTodosOsPacientesDaFilial(codFilialSessao);
-    }
-    
-    public void excluirPaciente(ActionEvent e){
-        ServicoPaciente servico = FabricaServico.obterServicoDePaciente();
-        servico.excluirPaciente(pacienteSelecionado);
-
-        listaPacientes = servico.obterTodosOsPacientesDaFilial(codFilialSessao);
-    }
-
-    public void criarNovaConsulta(ActionEvent e){
-        ConsultaPK consultaChave = new ConsultaPK();
-        consultaChave.setCodPacienteConsulta(pacienteSelecionado.getPacientePK().getCodPaciente());
-        
-        consultaSelecionada = new Consulta();
-        consultaSelecionada.setConsultaPK(consultaChave);
-    }
-
-    public void salvarConsulta(ActionEvent e){
-        ServicoConsulta servico = FabricaServico.obterServicoDeConsulta();
-        servico.salvarConsulta(pacienteSelecionado, consultaSelecionada);
-        
-        carregarListaDeConsultasDoPacienteSelecionado();
-    }
-    
-    public void excluirConsulta(ActionEvent e){
-        ServicoConsulta servico = FabricaServico.obterServicoDeConsulta();
-        servico.excluirConsulta(pacienteSelecionado, consultaSelecionada);
-
-        carregarListaDeConsultasDoPacienteSelecionado();
-    }
-
     /**
      * @return the pacienteSelecionado
      */
@@ -118,22 +146,6 @@ public class PrincipalBean implements Serializable{
         this.listaPacientes = listaPacientes;
     }
     
-    public String carregarListaDeConsultasDoPacienteSelecionado(){
-        if ((pacienteSelecionado != null) & (pacienteSelecionado.getPacientePK() != null)){
-            ServicoConsulta servico = FabricaServico.obterServicoDeConsulta();
-            listaConsultasDoPaciente = servico.obterTodasAsConsultasDoPaciente(pacienteSelecionado.getPacientePK().getCodPaciente());
-            pacienteSelecionado.setConsultaCollection(listaConsultasDoPaciente);
-        }
-        return null;
-    }
-    
-    public void efetuarLogoff(ActionEvent e){
-        JSFUtil.removerObjetoDaSessao("codEmpresa");
-        JSFUtil.removerObjetoDaSessao("codFilial");
-        JSFUtil.removerObjetoDaSessao("usuario");
-        JSFUtil.redirecionarParaAPagina("login.xhtml");
-    }
-
     /**
      * @return the consultaSelecionada
      */
@@ -193,6 +205,96 @@ public class PrincipalBean implements Serializable{
         this.novaSenhaConfirmacao = novaSenhaConfirmacao;
     }
     
+    public PrincipalBean(){
+        this.obterTodosOsPacientesDaFilial();
+    }
+    
+    public void obterTodosOsPacientesDaFilial(){
+        ServicoPaciente servico = FabricaServico.obterServicoDePaciente();
+        listaPacientes = servico.obterTodosOsPacientesDaFilial(codFilialSessao);
+    }
+    
+    public void obterPacientesDeAcordoComOFiltro(){
+        ServicoPaciente servico = FabricaServico.obterServicoDePaciente();
+        listaPacientes = servico.obterPacientesFilialDeAcordoComOFiltro(IdentificacaoBusca, NomeBusca, EmailBusca, AtivoBusca, codFilialSessao);
+    }
+    
+    public void criarNovoPaciente(ActionEvent e){
+        PacientePK pacienteChave = new PacientePK();
+        pacienteChave.setCodFilialPaciente((Integer)JSFUtil.obterObjetoNaSessao("codFilial"));
+        
+        pacienteSelecionado = new Paciente();
+        pacienteSelecionado.setPacientePK(pacienteChave);
+    }
+
+    public void salvarPaciente(ActionEvent e){
+        ServicoPaciente servico = FabricaServico.obterServicoDePaciente();
+        servico.salvarPaciente(pacienteSelecionado);
+        
+        if (codigoFiltroExecutadoListaPacientes == 0)
+            obterTodosOsPacientesDaFilial();
+        else
+            obterPacientesDeAcordoComOFiltro();
+    }
+    
+    public void excluirPaciente(ActionEvent e){
+        ServicoPaciente servico = FabricaServico.obterServicoDePaciente();
+        servico.excluirPaciente(pacienteSelecionado);
+
+        if (codigoFiltroExecutadoListaPacientes == 0)
+            obterTodosOsPacientesDaFilial();
+        else
+            obterPacientesDeAcordoComOFiltro();
+    }
+
+    public void cancelarPaciente(ActionEvent e){
+        ServicoPaciente servico = FabricaServico.obterServicoDePaciente();
+        servico.atualizarPaciente(pacienteSelecionado);
+    }
+
+    public void criarNovaConsulta(ActionEvent e){
+        ConsultaPK consultaChave = new ConsultaPK();
+        consultaChave.setCodPacienteConsulta(pacienteSelecionado.getPacientePK().getCodPaciente());
+        
+        consultaSelecionada = new Consulta();
+        consultaSelecionada.setConsultaPK(consultaChave);
+    }
+
+    public void salvarConsulta(ActionEvent e){
+        ServicoConsulta servico = FabricaServico.obterServicoDeConsulta();
+        servico.salvarConsulta(pacienteSelecionado, consultaSelecionada);
+        
+        carregarListaDeConsultasDoPacienteSelecionado();
+    }
+    
+    public void excluirConsulta(ActionEvent e){
+        ServicoConsulta servico = FabricaServico.obterServicoDeConsulta();
+        servico.excluirConsulta(pacienteSelecionado, consultaSelecionada);
+
+        carregarListaDeConsultasDoPacienteSelecionado();
+    }
+
+    public void cancelarConsulta(ActionEvent e){
+        ServicoConsulta servico = FabricaServico.obterServicoDeConsulta();
+        servico.atualizarConsulta(consultaSelecionada);
+    }
+
+    public String carregarListaDeConsultasDoPacienteSelecionado(){
+        if ((pacienteSelecionado != null) & (pacienteSelecionado.getPacientePK() != null)){
+            ServicoConsulta servico = FabricaServico.obterServicoDeConsulta();
+            listaConsultasDoPaciente = servico.obterTodasAsConsultasDoPaciente(pacienteSelecionado.getPacientePK().getCodPaciente());
+            pacienteSelecionado.setConsultaCollection(listaConsultasDoPaciente);
+        }
+        return null;
+    }
+    
+    public void efetuarLogoff(ActionEvent e){
+        JSFUtil.removerObjetoDaSessao("codEmpresa");
+        JSFUtil.removerObjetoDaSessao("codFilial");
+        JSFUtil.removerObjetoDaSessao("usuario");
+        JSFUtil.redirecionarParaAPagina("login.xhtml");
+    }
+
     public void alterarSenha(){
         ServicoUsuario servico = FabricaServico.obterServicoDeUsuario();
         try {
@@ -207,4 +309,32 @@ public class PrincipalBean implements Serializable{
         novaSenhaConfirmacao = "";
     }
     
+    public void obterFilialDaSessao(ActionEvent e){
+        ServicoFilial servico = FabricaServico.obterServicoDeFilial();
+        setFilialSessao(servico.obterFilialPorCodigo(codFilialSessao));
+    }
+    
+    public void salvarFilialDaSessao(ActionEvent e){
+        ServicoFilial servico = FabricaServico.obterServicoDeFilial();
+        servico.salvarFilial(filialSessao);
+    }
+
+    public void cancelarFilialDaSessao(ActionEvent e){
+        ServicoFilial servico = FabricaServico.obterServicoDeFilial();
+        servico.atualizarFilial(filialSessao);
+    }
+    
+    public void filtrarListaDePacientes(ActionEvent e){
+        this.obterPacientesDeAcordoComOFiltro();
+        codigoFiltroExecutadoListaPacientes = 1;
+    }
+
+    public void zerarFiltroDaListaDePacientes(ActionEvent e){
+        IdentificacaoBusca = "";
+        NomeBusca = "";
+        EmailBusca = "";
+        AtivoBusca = -1;
+        obterTodosOsPacientesDaFilial();
+        codigoFiltroExecutadoListaPacientes = 0;
+    }
 }

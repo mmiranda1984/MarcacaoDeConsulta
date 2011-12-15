@@ -36,6 +36,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Filial.findByIndAtivo", query = "SELECT f FROM Filial f WHERE f.indAtivo = :indAtivo"),
     @NamedQuery(name = "Filial.todasAsFiliasAtivasDeUmaEmpresa", query = "SELECT f FROM Filial f WHERE f.filialPK.codEmpresaFilial = :codEmpresaFilial and f.indAtivo = 1")})
 public class Filial implements Serializable {
+    @Column(name = "IND_RECEBER_COPIA_EMAIL")
+    private Boolean indReceberCopiaEmail;
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected FilialPK filialPK;
@@ -155,6 +157,14 @@ public class Filial implements Serializable {
     @Override
     public String toString() {
         return "lusano.marcacaodeconsulta.entity.Filial[ filialPK=" + filialPK + " ]";
+    }
+
+    public Boolean getIndReceberCopiaEmail() {
+        return indReceberCopiaEmail;
+    }
+
+    public void setIndReceberCopiaEmail(Boolean indReceberCopiaEmail) {
+        this.indReceberCopiaEmail = indReceberCopiaEmail;
     }
     
 }

@@ -20,4 +20,18 @@ public class ServicoFilialImpl implements ServicoFilial{
         return rep.obterFiliaisAtivasDaEmpresa(codEmpresa);
     }
     
+    public Filial obterFilialPorCodigo(int codFilial){
+        RepositorioFilial rep = FabricaRepositorio.obterRepositorioDeFilial();
+        return rep.obterFilialPorCodigo(codFilial);
+    }
+ 
+    public void salvarFilial(Filial filial){
+        RepositorioFilial rep = FabricaRepositorio.obterRepositorioDeFilial();
+        rep.salvarFilial(filial);
+    }
+    
+    public void atualizarFilial(Filial filial){
+        RepositorioFilial rep = FabricaRepositorio.obterRepositorioDeFilial();
+        rep.atualizarFilial(filial);
+    }
 }

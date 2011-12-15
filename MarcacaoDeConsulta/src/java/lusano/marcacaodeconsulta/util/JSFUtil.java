@@ -92,12 +92,13 @@ public class JSFUtil {
         return resource.getString(nomeCampo);
     }
 
-    public static Boolean enviarEmail(Usuario usuario, String tituloEmail, String corpoMensagem, String copiaPara) {
+    public static Boolean enviarEmail(Usuario usuario, String tituloEmail, String corpoMensagem, String copiaPara, String copiaOcultaPara) {
         EnviarEmail mail = new EnviarEmail();
             //EmailUtil mail = new EmailUtil();
 
             return mail.enviarEmail(usuario.getFilial().getTxtEmailFilial(),
                                     copiaPara,
+                                    copiaOcultaPara,
                                     tituloEmail,
                                     corpoMensagem);
     }

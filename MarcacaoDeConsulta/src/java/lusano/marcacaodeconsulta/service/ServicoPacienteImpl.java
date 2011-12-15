@@ -21,6 +21,11 @@ public class ServicoPacienteImpl implements ServicoPaciente{
         return rep.obterPacientesFilial(codFilial);
     }
     
+    public List<Paciente> obterPacientesFilialDeAcordoComOFiltro(String identificacaoBusca, String nomeBusca, String emailBusca, int ativoBusca, int codFilial){
+        RepositorioPaciente rep = FabricaRepositorio.obterRepositorioDePaciente();
+        return rep.obterPacientesFilialDeAcordoComOFiltro(identificacaoBusca, nomeBusca, emailBusca, ativoBusca, codFilial);
+    }
+    
     public void salvarPaciente(Paciente paciente){
         RepositorioPaciente rep = FabricaRepositorio.obterRepositorioDePaciente();
         int codFilial = (Integer)JSFUtil.obterObjetoNaSessao("codFilial");
@@ -48,4 +53,8 @@ public class ServicoPacienteImpl implements ServicoPaciente{
         }
     }
     
+    public void atualizarPaciente(Paciente paciente){
+        RepositorioPaciente rep = FabricaRepositorio.obterRepositorioDePaciente();
+        rep.atualizarPaciente(paciente);
+    }
 }

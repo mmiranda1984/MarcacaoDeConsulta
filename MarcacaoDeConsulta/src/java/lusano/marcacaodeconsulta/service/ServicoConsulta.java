@@ -18,4 +18,5 @@ public interface ServicoConsulta {
     void salvarConsulta(Paciente paciente, Consulta consulta);
     void excluirConsulta(Paciente paciente, Consulta consulta);
     void excluirTodasAsConsultasDoPaciente(int codPaciente);
+    void atualizarConsulta(Consulta consulta);
 }

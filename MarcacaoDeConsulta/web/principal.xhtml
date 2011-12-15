@@ -34,314 +34,107 @@
                         <p:spacer width="20" />
                     </p:toolbarGroup>  
 
+                    <p:toolbarGroup align="right">  
+                        <p:commandLink actionListener="#{principalBean.obterFilialDaSessao}" update="dadosFilial" oncomplete="dlgDadosFilial.show()">
+                            <h:graphicImage style="border: none" alt="Clique para alterar os dados da filial" url="/images/Filial.png"/>
+                        </p:commandLink>
+                        <p:spacer width="20" />
+                    </p:toolbarGroup>  
+
                 </p:toolbar>  
 
-                <p:spacer height="20" />
+                <p:spacer height="10" />
 
-                <p:dataTable id="tabPaciente" var="paciente" value="#{principalBean.listaPacientes}" emptyMessage="Nenhum paciente encontrado"
-                     paginator="true" rows="10" paginatorPosition="bottom" 
-                     paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
-                     rowsPerPageTemplate="5,10,15">  
+                <center>
+                <p:panel header="Busca de Pacientes" style="width: 600px;">
+                    <h:panelGrid  columns="2" style="margin-bottom:10px" id="panelFiltro">
+                        <h:outputLabel for="txtIdentificacao" value="Por Identificação :" />
+                        <p:inputText  style="width:100px;" id="txtIdentificacao" maxlength="10" value="#{principalBean.identificacaoBusca}" />
 
-                    <p:column filterBy="#{paciente.numIdentificacaoPaciente}" sortBy="#{paciente.numIdentificacaoPaciente}"   
-                            headerText="Identificação" filterMatchMode="startsWith" style="width:10%">  
-                        <h:outputText value="#{paciente.numIdentificacaoPaciente}" />  
-                    </p:column>  
+                        <h:outputLabel value="Por Nome :" />
+                        <p:inputText  style="width:350px;" id="txtNome" maxlength="100" value="#{principalBean.nomeBusca}" />
+
+                        <h:outputLabel value="Por E-mail :" />
+                        <p:inputText  style="width:350px;" id="txtEmail" maxlength="100" value="#{principalBean.emailBusca}" />
+
+                        <h:outputLabel value="Por Status :" />
+                        <h:selectOneMenu style="width:100px;" id="cbmStatus" value="#{principalBean.ativoBusca}">
+                            <f:selectItem itemValue="-1" itemLabel="-----"  />
+                            <f:selectItem itemValue="1" itemLabel="Ativo"  />
+                            <f:selectItem itemValue="0" itemLabel="Inativo" />
+                        </h:selectOneMenu>
+                    </h:panelGrid>
+                    <p:commandButton value="Filtrar" actionListener="#{principalBean.filtrarListaDePacientes}" update="tabPaciente"/>
+                    <p:commandButton value="Zerar Filtros" actionListener="#{principalBean.zerarFiltroDaListaDePacientes}" update="tabPaciente panelFiltro"/>
+                </p:panel>
+                </center>
+
+                <p:spacer height="10" />
+
+                <p:panel>
+                    <p:dataTable id="tabPaciente" var="paciente" value="#{principalBean.listaPacientes}" emptyMessage="Nenhum paciente encontrado"
+                         paginator="true" rows="8" paginatorPosition="bottom" 
+                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  
+                         >  
+
+                        <p:column sortBy="#{paciente.numIdentificacaoPaciente}" headerText="Identificação" style="width:10%">  
+                            <h:outputText value="#{paciente.numIdentificacaoPaciente}" />  
+                        </p:column>  
 
 
-                    <p:column filterBy="#{paciente.nomPaciente}" sortBy="#{paciente.nomPaciente}"   
-                            headerText="Nome" filterMatchMode="startsWith" style="width:40%">  
-                        <h:outputText value="#{paciente.nomPaciente}" />  
-                    </p:column>  
+                        <p:column sortBy="#{paciente.nomPaciente}" headerText="Nome" style="width:40%">  
+                            <h:outputText value="#{paciente.nomPaciente}" />  
+                        </p:column>  
 
-                    <p:column filterBy="#{paciente.txtEmailPaciente}" sortBy="#{paciente.txtEmailPaciente}"   
-                            headerText="E-mail" filterMatchMode="startsWith" style="width:20%">  
-                        <h:outputText value="#{paciente.txtEmailPaciente}" />  
-                    </p:column>  
+                        <p:column sortBy="#{paciente.txtEmailPaciente}" headerText="E-mail" style="width:20%">  
+                            <h:outputText value="#{paciente.txtEmailPaciente}" />  
+                        </p:column>  
 
-                    <p:column filterBy="#{paciente.numContatoPaciente}" sortBy="#{paciente.numContatoPaciente}"   
-                            headerText="Telefone" filterMatchMode="startsWith" style="width:10%;  text-align: center">  
-                        <h:outputText value="#{paciente.numContatoPaciente}" />  
-                    </p:column>  
+                        <p:column sortBy="#{paciente.numContatoPaciente}" headerText="Telefone" style="width:10%;  text-align: center">  
+                            <h:outputText value="#{paciente.numContatoPaciente}" />  
+                        </p:column>  
 
-                    <p:column filterBy="#{paciente.status}" sortBy="#{paciente.status}"   
-                            headerText="Status" filterMatchMode="startsWith" style="width:10%; text-align: center">  
-                        <h:outputText value="#{paciente.status}"/>  
-                    </p:column>  
+                        <p:column sortBy="#{paciente.status}" headerText="Status" style="width:10%; text-align: center">  
+                            <h:outputText value="#{paciente.status}"/>  
+                        </p:column>  
 
-                    <p:column style="width:20%">
-                        <f:facet name="header" >
-                        </f:facet>
+                        <p:column style="width:20%">
+                            <f:facet name="header" >
+                            </f:facet>
 
-                        <center>
-                            <p:commandLink id="linkEdicao" onsuccess="dlgCadastro.show();" update="cadastro">
-                                <f:setPropertyActionListener target="#{principalBean.pacienteSelecionado}" value="#{paciente}"/>
-                                <h:graphicImage style="border: none" alt="Clique para editar o paciente" url="/images/editarPaciente.png"/>
-                            </p:commandLink>
+                            <center>
+                                <p:commandLink id="linkEdicao" onsuccess="dlgCadastro.show();" update="cadastro">
+                                    <f:setPropertyActionListener target="#{principalBean.pacienteSelecionado}" value="#{paciente}"/>
+                                    <h:graphicImage style="border: none" alt="Clique para editar o paciente" url="/images/editarPaciente.png"/>
+                                </p:commandLink>
 
-                            <h:graphicImage style="border: none" url="/images/pontoBranco.png"/>
+                                <h:graphicImage style="border: none" url="/images/pontoBranco.png"/>
 
-                            <p:commandLink id="linkExclusao" oncomplete="dialogExcluir.show();">
-                                <f:setPropertyActionListener target="#{principalBean.pacienteSelecionado}" value="#{paciente}"/>
-                                <h:graphicImage style="border: none" alt="Clique para excluir o paciente" url="/images/removerPaciente.png"/>
-                            </p:commandLink>
+                                <p:commandLink id="linkExclusao" oncomplete="dialogExcluir.show();">
+                                    <f:setPropertyActionListener target="#{principalBean.pacienteSelecionado}" value="#{paciente}"/>
+                                    <h:graphicImage style="border: none" alt="Clique para excluir o paciente" url="/images/removerPaciente.png"/>
+                                </p:commandLink>
 
-                            <h:graphicImage style="border: none" url="/images/pontoBranco.png"/>
+                                <h:graphicImage style="border: none" url="/images/pontoBranco.png"/>
 
-                            <p:commandLink id="linkConsulta" oncomplete="dialogConsulta.show();" update="consultaPaciente" action="#{principalBean.carregarListaDeConsultasDoPacienteSelecionado}">
-                                <f:setPropertyActionListener target="#{principalBean.pacienteSelecionado}" value="#{paciente}"/>
-                                <h:graphicImage style="border: none" alt="Clique para visualizar as consultas do paciente" url="/images/consulta.png"/>
-                            </p:commandLink>
-                        </center>
-                    </p:column>
-                </p:dataTable>
+                                <p:commandLink id="linkConsulta" oncomplete="dialogConsulta.show();" update="consultaPaciente" action="#{principalBean.carregarListaDeConsultasDoPacienteSelecionado}">
+                                    <f:setPropertyActionListener target="#{principalBean.pacienteSelecionado}" value="#{paciente}"/>
+                                    <h:graphicImage style="border: none" alt="Clique para visualizar as consultas do paciente" url="/images/consulta.png"/>
+                                </p:commandLink>
+                            </center>
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
             </p:outputPanel>
         </h:form>
 
-        <p:dialog header="Cadastro de Paciente" widgetVar="dlgCadastro" height="230" width="480"
-                  id="dialog" modal="true" resizable="false">
-            <h:form prependId="false">
-                <p:growl id="growl" showDetail="false" life="1500" />
-                <p:outputPanel id="cadastro">
-                    
-                    <h:panelGrid  columns="2" style="margin-bottom:10px">
-                        <h:outputLabel for="txtIdentificacao" value="Identificação :" />
-                        <p:inputText  style="width:100px;" id="txtIdentificacao" maxlength="10" value="#{principalBean.pacienteSelecionado.numIdentificacaoPaciente}" required="false"/>
-
-                        <h:outputLabel value="Nome :" />
-                        <p:inputText  style="width:350px;" id="txtNome" maxlength="100" value="#{principalBean.pacienteSelecionado.nomPaciente}" required="true" requiredMessage="O campo Nome é obrigatório"/>
-
-                        <h:outputLabel value="E-mail :" />
-                        <p:inputText  style="width:350px;" id="txtEmail" maxlength="100" value="#{principalBean.pacienteSelecionado.txtEmailPaciente}" required="true" requiredMessage="O campo E-mail é obrigatório"/>
-
-                        <h:outputLabel value="Telefone :" />
-                        <p:inputMask  style="width:100px;" id="txtTelefone" maxlength="13" value="#{principalBean.pacienteSelecionado.numContatoPaciente}" required="false" mask="(99)9999-9999"/>
-
-                        <h:outputLabel value="Status :" />
-                        <h:selectOneMenu style="width:100px;" id="cbmStatus"  value="#{principalBean.pacienteSelecionado.indAtivo}">
-                            <f:selectItem itemValue="true" itemLabel="Ativo"  />
-                            <f:selectItem itemValue="false" itemLabel="Inativo" />
-                        </h:selectOneMenu>
-                    </h:panelGrid>
-
-                    <p:outputPanel style="text-align:center;" layout="block">
-                        <p:commandLink id="btnSalvar" oncomplete="validarCamposObrigatorios(xhr, status, args)" update="growl formPaciente" actionListener="#{principalBean.salvarPaciente}" ajax="true">
-                            <h:graphicImage style="border: none" alt="Clique para gravar os dados" url="/images/Salvar.png"/>
-                        </p:commandLink>
-
-                        <p:spacer width="30"/>                        
-
-                        <p:commandLink id="btnCancelar" onclick="dlgCadastro.hide();">
-                            <h:graphicImage style="border: none" alt="Clique para cancelar os dados" url="/images/Cancelar.png"/>
-                        </p:commandLink>
-                    </p:outputPanel>
-                </p:outputPanel>
-            </h:form>
-        </p:dialog>
-
-        <script type="text/javascript">  
-            function validarCamposObrigatorios(xhr, status, args) {  
-                if(!args.validationFailed) {  
-                    dlgCadastro.hide();  
-                }  
-            }  
-        </script>  
-
-        <p:dialog header="Cadastro de Paciente" widgetVar="dialogExcluir" height="105" width="310"
-                  id="dialogE" modal="true" resizable="false">
-
-            <h:form prependId="false">
-                <p:growl id="growlExclusao" showDetail="false" life="1500" />
-                <p:outputPanel style="text-align:center;" layout="block">
-                    <h:panelGrid  columns="1"  width="100%" >
-                        <h:outputLabel value="Deseja realmente excluir o paciente ?"/>
-
-                        <p:outputPanel style="text-align:center; margin-top: 10px;" layout="block">
-
-                            <p:commandButton actionListener="#{principalBean.excluirPaciente}" update="growlExclusao listaPaciente formPaciente"
-                                             oncomplete="dialogExcluir.hide();"
-                                             value="Sim" id="btnExcluir" ajax="true" />
-                            <p:spacer width="20"/>
-                            <p:commandButton type="button" onclick="dialogExcluir.hide();" value="Não"/>
-                        </p:outputPanel>
-                    </h:panelGrid>
-                </p:outputPanel>
-            </h:form>
-        </p:dialog>
-
-        <p:dialog header="Cadastro de Consulta" widgetVar="dialogExcluirConsulta" height="105" width="310"
-                  id="dialogEC" modal="true" resizable="false">
-
-            <h:form prependId="false">
-                <p:growl id="growlExclusaoConsulta" showDetail="false" life="1500" />
-                <p:outputPanel style="text-align:center;" layout="block">
-                    <h:panelGrid  columns="1"  width="100%" >
-                        <h:outputLabel value="Deseja realmente excluir a consulta ?"/>
-
-                        <p:outputPanel style="text-align:center; margin-top: 10px;" layout="block">
-
-                            <p:commandButton actionListener="#{principalBean.excluirConsulta}" update="growlExclusaoConsulta consultaPaciente"
-                                             oncomplete="dialogExcluirConsulta.hide();"
-                                             value="Sim" id="btnExcluirConsulta" ajax="true" />
-                            <p:spacer width="20"/>
-                            <p:commandButton type="button" onclick="dialogExcluirConsulta.hide();" value="Não"/>
-                        </p:outputPanel>
-                    </h:panelGrid>
-                </p:outputPanel>
-            </h:form>
-        </p:dialog>
-        
-        <p:dialog header="Consulta de Paciente" widgetVar="dialogConsulta" height="300" width="600"
-                  id="dialogC" modal="true" resizable="false">
-
-            <h:form prependId="false" id="formConsulta">
-                <p:growl id="growlConsulta" showDetail="false" life="1500" />
-                <p:outputPanel style="text-align:center;" layout="block" id="consultaPaciente">
-
-                    <p:toolbar>  
-                        <p:toolbarGroup align="left">  
-                            <p:spacer width="20" />
-                            <p:commandLink actionListener="#{principalBean.criarNovaConsulta}" update="cadastroConsulta" oncomplete="dlgCadastroConsulta.show();" disabled="#{!principalBean.pacienteSelecionado.indAtivo}">
-                                <h:graphicImage style="border: none" alt="Clique para cadastrar uma nova consulta" url="/images/adicionarConsulta.png"/>
-                            </p:commandLink>
-                        </p:toolbarGroup>  
-                    </p:toolbar>  
-
-                    <p:spacer height="20" />
-
-                    <h:panelGrid  columns="1"  width="100%" >
-
-                        <p:dataTable id="tabConsulta" var="consulta" value="#{principalBean.listaConsultasDoPaciente}" emptyMessage="Nenhuma consulta encontrada"
-                             paginator="true" rows="5" paginatorPosition="bottom" 
-                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
-                             rowsPerPageTemplate="5">  
-
-                            <p:column sortBy="#{consulta.datConsulta}"  
-                                    headerText="Data da Consulta" filterMatchMode="startsWith" style="width:20%">  
-                                <h:outputText value="#{consulta.datConsulta}">
-                                    <f:convertDateTime pattern="dd/MM/yyyy"/>  
-                                </h:outputText>
-                            </p:column>  
-
-
-                            <p:column sortBy="#{consulta.horConsulta}" style="width:20%">  
-                                <f:facet name="header">  
-                                    <h:outputText value="Hora da Consulta"/>
-                                </f:facet>  
-                                <h:outputText value="#{consulta.horConsulta}" />  
-                            </p:column>  
-
-                            <p:column sortBy="#{consulta.numDiasAntecedenciaEmail}"   
-                                    headerText="Intervalo E-mail" filterMatchMode="startsWith" style="width:40%">  
-                                <h:outputText value="#{consulta.numDiasAntecedenciaEmail}" />  
-                            </p:column>  
-
-                            <p:column style="width: 20%;">
-                                <f:facet name="header" >
-                                </f:facet>
-                                <center>
-                                    <p:commandLink id="linkEdicaoConsulta" onsuccess="dlgCadastroConsulta.show();" update="cadastroConsulta" disabled="#{!principalBean.pacienteSelecionado.indAtivo}">
-                                        <f:setPropertyActionListener target="#{principalBean.consultaSelecionada}" value="#{consulta}"/>
-                                        <h:graphicImage style="border: none" alt="Clique para editar a consulta" url="/images/editarConsulta.png"/>
-                                    </p:commandLink>
-
-                                    <h:graphicImage style="border: none" url="/images/pontoBranco.png"/>
-
-                                    <p:commandLink id="linkExclusaoConsulta" oncomplete="dialogExcluirConsulta.show();" disabled="#{!principalBean.pacienteSelecionado.indAtivo}">
-                                        <f:setPropertyActionListener target="#{principalBean.consultaSelecionada}" value="#{consulta}"/>
-                                        <h:graphicImage style="border: none" alt="Clique para excluir a consulta" url="/images/removerConsulta.png"/>
-                                    </p:commandLink>
-                                </center>
-                            </p:column>
-
-
-                        </p:dataTable>
-
-                    </h:panelGrid>
-                </p:outputPanel>
-            </h:form>
-        </p:dialog>
-
-        <p:dialog header="Cadastro de Consulta" widgetVar="dlgCadastroConsulta" height="180" width="410"
-                  id="dialogCC" modal="true" resizable="false">
-            <h:form prependId="false">
-                <p:growl id="growlCadastroConsulta" showDetail="false" life="1500" />
-                <p:outputPanel id="cadastroConsulta">
-                    
-                    <h:panelGrid  columns="2" style="margin-bottom:10px">
-                        <h:outputLabel for="txtData" value="Data :" />
-                        <p:calendar style="width:25px;" id="txtData" value="#{principalBean.consultaSelecionada.datConsulta}" pattern="dd/MM/yyyy" required="true" requiredMessage="O campo Data é obrigatório"/>   
-
-                        <h:outputLabel value="Hora :" />
-                        <p:inputMask mask="99:99" style="width:40px;" id="txtHora" maxlength="5" value="#{principalBean.consultaSelecionada.horConsulta}" required="true" requiredMessage="O campo Hora é obrigatório"/>
-
-                        <h:outputLabel value="Qtd Dias de Antecedência E-mail :" />
-                        <p:inputText  style="width:20px;" id="txtQtdDiasAntecedenciaEmail" maxlength="2" value="#{principalBean.consultaSelecionada.numDiasAntecedenciaEmail}" required="true" requiredMessage="O campo Qtd Dias de Antecedência E-mail é obrigatório"/>
-                    </h:panelGrid>
-
-                    <p:outputPanel style="text-align:center;" layout="block">
-
-                        <p:commandLink id="btnSalvarConsulta" oncomplete="validarCamposObrigatoriosConsulta(xhr, status, args)" update="growlConsulta consultaPaciente" actionListener="#{principalBean.salvarConsulta}" ajax="true">
-                            <h:graphicImage style="border: none" alt="Clique para salvar os dados" url="/images/Salvar.png"/>
-                        </p:commandLink>
-
-                        <p:spacer width="30"/>                        
-
-                        <p:commandLink id="btnCancelarConsulta" onclick="dlgCadastroConsulta.hide();">
-                            <h:graphicImage style="border: none" alt="Clique para cancelar os dados" url="/images/Cancelar.png"/>
-                        </p:commandLink>
-
-                    </p:outputPanel>
-                </p:outputPanel>
-            </h:form>
-        </p:dialog>
-        
-        <script type="text/javascript">  
-            function validarCamposObrigatoriosConsulta(xhr, status, args) {  
-                if(!args.validationFailed) {  
-                    dlgCadastroConsulta.hide();  
-                }  
-            }  
-        </script>  
-
-        <p:dialog header="Alterar senha" widgetVar="dlgAlterarSenha" height="150" width="400"
-                  id="dialogAS" modal="true" resizable="false">
-            <h:form prependId="false">
-                <p:growl id="growlAlterarSenha" showDetail="false" life="1500" />
-                <p:outputPanel id="alterarSenha">
-                    
-                    <h:panelGrid  columns="2" style="margin-bottom:10px">
-                        <h:outputLabel for="txtData" value="Nova Senha :" />
-                        <p:password value="#{principalBean.novaSenha}" feedback="false" minLength="1" style="width: 250px" required="true" requiredMessage="A nova senha é obrigatória"/>
-
-                        <h:outputLabel value="Confirmar Nova Senha :" />
-                        <p:password value="#{principalBean.novaSenhaConfirmacao}" feedback="false" minLength="1" style="width: 250px" required="true" requiredMessage="A confirmação da nova senha é obrigatória"/>
-                    </h:panelGrid>
-
-                    <p:outputPanel style="text-align:center;" layout="block">
-
-                        <p:commandLink id="btnSalvarSenha" update="growlAlterarSenha" oncomplete="validarCamposObrigatoriosAlteracaoSenha(xhr, status, args)" actionListener="#{principalBean.alterarSenha}" ajax="true">
-                            <h:graphicImage style="border: none" alt="Clique para alterar a senha" url="/images/Salvar.png"/>
-                        </p:commandLink>
-
-                        <p:spacer width="30"/>                        
-
-                        <p:commandLink id="btnCancelarSenha" onclick="dlgAlterarSenha.hide();">
-                            <h:graphicImage style="border: none" alt="Clique para cancelar a alteração de senha" url="/images/Cancelar.png"/>
-                        </p:commandLink>
-
-                    </p:outputPanel>
-                </p:outputPanel>
-            </h:form>
-        </p:dialog>
-
-        <script type="text/javascript">  
-            function validarCamposObrigatoriosAlteracaoSenha(xhr, status, args) {  
-                if(!args.validationFailed) {  
-                    dlgAlterarSenha.hide();  
-                }  
-            }  
-        </script>  
+        <ui:include src="modalPanel/cadastroPaciente.xhtml"/>
+        <ui:include src="modalPanel/excluirPaciente.xhtml"/>
+        <ui:include src="modalPanel/excluirConsulta.xhtml"/>
+        <ui:include src="modalPanel/consultaPaciente.xhtml"/>
+        <ui:include src="modalPanel/cadastroConsulta.xhtml"/>
+        <ui:include src="modalPanel/alterarSenha.xhtml"/>
+        <ui:include src="modalPanel/dadosFilial.xhtml"/>
         
     </ui:define>
 </ui:composition>

@@ -38,7 +38,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Paciente.findByTxtEmailPaciente", query = "SELECT p FROM Paciente p WHERE p.txtEmailPaciente = :txtEmailPaciente"),
     @NamedQuery(name = "Paciente.findByNumContatoPaciente", query = "SELECT p FROM Paciente p WHERE p.numContatoPaciente = :numContatoPaciente"),
     @NamedQuery(name = "Paciente.findByIndAtivoCodFilial", query = "SELECT p FROM Paciente p WHERE p.pacientePK.codFilialPaciente = :codFilialPaciente AND p.indAtivo = :indAtivo"),
-    @NamedQuery(name = "Paciente.findByIndAtivo", query = "SELECT p FROM Paciente p WHERE p.indAtivo = :indAtivo")})
+    @NamedQuery(name = "Paciente.findByIndAtivo", query = "SELECT p FROM Paciente p WHERE p.indAtivo = :indAtivo"),
+    @NamedQuery(name = "Paciente.obterPacientesDeAcordoComOFiltro", query = "SELECT p FROM Paciente p WHERE p.pacientePK.codFilialPaciente = :codFilialPaciente AND ((p.numIdentificacaoPaciente = :numIdentificacaoPaciente) OR (:numIdentificacaoPaciente IS null)) AND ((p.nomPaciente LIKE :nomPaciente) OR (:nomPaciente IS null)) AND ((p.txtEmailPaciente LIKE :txtEmailPaciente) OR (:txtEmailPaciente IS null)) AND ((p.indAtivo = :indAtivo) OR (:indAtivo IS null)) ")
+})
 public class Paciente implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId

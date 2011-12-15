@@ -72,7 +72,7 @@ public class ServicoUsuarioImpl implements ServicoUsuario{
                     String corpoMensagem = ConstantsUtil.getCorpoEmailAlterarSenha().replace("<nomeusuario>", usuario.getNomUsuario());
                     corpoMensagem = corpoMensagem.replace("<novasenha>", novaSenha);
 
-                    if (JSFUtil.enviarEmail(usuario, ConstantsUtil.getTituloEmailAlterarSenha(), corpoMensagem, "")) {
+                    if (JSFUtil.enviarEmail(usuario, ConstantsUtil.getTituloEmailAlterarSenha(), corpoMensagem, "", "")) {
                         RepositorioUsuario rep = FabricaRepositorio.obterRepositorioDeUsuario();
                         usuario.setTxtSenhaUsuario(novaSenhaCriptografada);
                         rep.salvarUsuario(usuario);

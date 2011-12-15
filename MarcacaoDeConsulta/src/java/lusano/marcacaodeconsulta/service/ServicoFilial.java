@@ -14,5 +14,7 @@ import lusano.marcacaodeconsulta.entity.Filial;
 public interface ServicoFilial {
     
     List<Filial> obterFiliaisAtivasDaEmpresa(int codEmpresa);
-    
+    Filial obterFilialPorCodigo(int codFilial);
+    void salvarFilial(Filial filial);
+    void atualizarFilial(Filial filial);
 }

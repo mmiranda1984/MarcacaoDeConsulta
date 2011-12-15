@@ -6,6 +6,7 @@ package lusano.marcacaodeconsulta.bean;
 
 import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import lusano.marcacaodeconsulta.valueobject.Versao;
 
@@ -14,7 +15,7 @@ import lusano.marcacaodeconsulta.valueobject.Versao;
  * @author mmiranda1984
  */
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class AplicacaoBean implements Serializable{
     
     public AplicacaoBean(){

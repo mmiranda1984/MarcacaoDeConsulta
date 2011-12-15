@@ -44,4 +44,8 @@ public class ServicoConsultaImpl implements ServicoConsulta{
         rep.excluirTodasAsConsultasDoPaciente(codPaciente);
     }
     
+    public void atualizarConsulta(Consulta consulta){
+        RepositorioConsulta rep = FabricaRepositorio.obterRepositorioDeConsulta();
+        rep.atualizarConsulta(consulta);
+    }
 }

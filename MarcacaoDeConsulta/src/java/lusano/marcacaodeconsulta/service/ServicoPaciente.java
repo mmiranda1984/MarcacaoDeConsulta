@@ -14,8 +14,9 @@ import lusano.marcacaodeconsulta.entity.Paciente;
 public interface ServicoPaciente {
  
     List<Paciente> obterTodosOsPacientesDaFilial(int codFilial);
+    List<Paciente> obterPacientesFilialDeAcordoComOFiltro(String identificacaoBusca, String nomeBusca, String emailBusca, int ativoBusca, int codFilial);
     
     void salvarPaciente(Paciente paciente);
     void excluirPaciente(Paciente paciente);
-    
+    void atualizarPaciente(Paciente paciente);
 }

@@ -28,4 +28,26 @@ public class RepositorioFiliaImpl extends RepositorioJPA<Filial> implements Repo
 
     }
     
+    public Filial obterFilialPorCodigo(int codFilial){
+        Query query;
+        query = getEntityManager().createNamedQuery("Filial.findByCodFilial", Filial.class);
+        query.setParameter("codFilial", codFilial);
+
+        try {
+            return (Filial) query.getSingleResult();
+        } catch (NoResultException ex) {
+            return null;
+        }
+    }
+ 
+    public void salvarFilial(Filial filial){
+        if (filial.getFilialPK().getCodFilial() != 0)
+            merge(filial);
+        else
+            persistir(filial);
+    }
+    
+    public void atualizarFilial(Filial filial){
+        atualizar(filial);
+    }
 }
