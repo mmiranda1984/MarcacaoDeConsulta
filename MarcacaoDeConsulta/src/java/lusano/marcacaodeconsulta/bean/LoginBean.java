@@ -27,7 +27,7 @@ import lusano.marcacaodeconsulta.util.JSFUtil;
  * @author mmiranda1984
  */
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class LoginBean implements Serializable {
 
     private int codEmpresaSelecionada;

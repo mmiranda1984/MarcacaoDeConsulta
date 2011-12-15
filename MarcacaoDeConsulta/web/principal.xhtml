@@ -74,7 +74,8 @@
                 <p:panel>
                     <p:dataTable id="tabPaciente" var="paciente" value="#{principalBean.listaPacientes}" emptyMessage="Nenhum paciente encontrado"
                          paginator="true" rows="8" paginatorPosition="bottom" 
-                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  
+                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                         rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'even-row' : 'odd-row'}" rowIndexVar="rowIx" 
                          >  
 
                         <p:column sortBy="#{paciente.numIdentificacaoPaciente}" headerText="Identificação" style="width:10%">  

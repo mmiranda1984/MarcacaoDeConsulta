@@ -31,8 +31,8 @@ and open the template in the editor.
 
                         <p:dataTable id="tabConsulta" var="consulta" value="#{principalBean.listaConsultasDoPaciente}" emptyMessage="Nenhuma consulta encontrada"
                              paginator="true" rows="5" paginatorPosition="bottom" 
-                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
-                             rowsPerPageTemplate="5">  
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  
+                             rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'even-row' : 'odd-row'}" rowIndexVar="rowIx" >  
 
                             <p:column sortBy="#{consulta.datConsulta}"  
                                     headerText="Data da Consulta" filterMatchMode="startsWith" style="width:20%">  

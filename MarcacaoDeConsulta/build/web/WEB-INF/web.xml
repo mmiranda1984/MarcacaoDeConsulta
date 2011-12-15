@@ -34,6 +34,11 @@
         <artifactId>cupertino</artifactId>
         <version>1.0.2</version>
     </dependency>
+    <dependency>
+        <groupId>org.primefaces.themes</groupId>
+        <artifactId>smoothness</artifactId>
+        <version>1.0.2</version>
+    </dependency>
     <context-param>
         <param-name>primefaces.THEME</param-name>
         <param-value>cupertino</param-value>

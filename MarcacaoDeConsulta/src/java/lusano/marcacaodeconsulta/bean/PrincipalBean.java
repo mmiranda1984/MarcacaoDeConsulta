@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 import lusano.criptografiadesenha.util.CriptografiaSenha;
 import lusano.marcacaodeconsulta.entity.Consulta;
@@ -27,7 +28,7 @@ import lusano.marcacaodeconsulta.util.JSFUtil;
  * @author mmiranda1984
  */
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class PrincipalBean implements Serializable{
     
     private Paciente pacienteSelecionado;
@@ -206,7 +207,7 @@ public class PrincipalBean implements Serializable{
     }
     
     public PrincipalBean(){
-        this.obterTodosOsPacientesDaFilial();
+        obterTodosOsPacientesDaFilial();
     }
     
     public void obterTodosOsPacientesDaFilial(){
